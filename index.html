@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas get image data tool</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div class="error danger">
+    Sorry, this extension is not allowed. <br>
+    Your file: <strong class="file"></strong> <br>
+    Try to use <strong>svg, png, jpeg or jpg.</strong>`
+  </div>
+
+  <h1 class="title">Get image data for canvas</h1>
+
+  <div class="image">
+
+    <div class="image-choose">
+      <div class="image-choose--start is-active">
+        <h4>Drag and drop a file here or</h4>
+        <form class="form">
+          <input class="file-input" type="file" id="file-input1">
+          <label class="button button-white" for="file-input1">Choose a file</label>
+        </form>
+      </div>
+      <div class="image-choose--overlay"></div>
+    </div>
+
+    <div class="image-data">
+      <div class="image-data--composition">
+        <h2 class="image-data--title">Image <br> info</h2>
+        <div class="image-data--width">
+          <div class="image-data--arrow"></div>
+          <span>...</span>
+        </div>
+        <div class="image-data--height">
+          <div class="image-data--arrow"></div>
+          <span>...</span>
+        </div>
+      </div>
+      <div class="image-data--info">
+        <div class="image-data--particles">
+          <h4 class="image-data--subtitle"><code>particles.length</code>: </h4><span>...</span>
+        </div>
+        <div class="image-data--coords">
+          <h4 class="image-data--subtitle"><code>[[x, y, r, ...], [...]].length</code>: </h4><span>...</span>
+        </div>
+        <div class="image-data--size">
+          <h4 class="image-data--subtitle">DATA SIZE: </h4><span>...</span>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+
+  <div class="controls">
+    <div class="controls--head">
+      <div class="controls--buttons">
+        <form class="form">
+          <input class="file-input" type="file" id="file-input2">
+          <label class="button" for="file-input2">Choose a file</label>
+        </form>
+        <button class="button controls--reset">Reset rgba</button>
+        <button class="button copy-data" disabled>Copy data</button>
+      </div>
+      <div class="sample">
+        <h4 class="sample--title">Sample: </h4>
+        <span>[123, 111, 153, ...]</span><span>  r      g       b</span>
+      </div>
+    </div>
+    <div class="samples">
+      <label class="samples--label">
+        <input class="samples--input" tp="rgb" type="radio" name="samples" value="1" checked>
+        <span> <span>r g b</span> - all coordinates - you need to use jpg rather than png or svg, otherwise<br> when you set <code> this.color = `rgb(${r},${g},${b})` </code> all transparent parts (if exist) will be black </span>
+      </label>
+      <label class="samples--label">
+        <input class="samples--input" tp="rgba" type="radio" name="samples" value="2">
+        <span> <span>r g b a</span> - all coordinates (.png) </span>
+      </label>
+      <label class="samples--label">
+        <input class="samples--input" tp="xyrgb" type="radio" name="samples" value="3">
+        <span> <span>x y  r g b</span> - selected coordinates with color (.png, .svg) - all coordinates with alpha < 1 excluded </span>
+      </label>
+      <label class="samples--label">
+        <input class="samples--input" tp="xyrgba" type="radio" name="samples" value="4">
+        <span> <span>x y  r g b a</span> - selected coordinates with color (.png, .svg) </span>
+      </label>
+      <label class="samples--label">
+        <input class="samples--input" tp="xy" type="radio" name="samples" value="5">
+        <span> <span>x y</span> - only selected coordinates, if you don't need an image color (text, shapes animations)</span>
+      </label>
+    </div>
+    <div class="controls--item" max="255">
+      <label class="controls--label">
+        <span class="controls--title">R</span>
+        <span class="controls--value-left">0</span>
+        <div class="controls--inputs">
+          <div class="controls--thumbs"><span></span><span></span></div>
+          <div class="controls--track"></div><input class="controls--input left" type="range" value="0" step="0.01" min="0" max="1">
+          <input class="controls--input" type="range" value="1" step="0.01" min="0" max="1">
+        </div>
+        <span class="controls--value-right">255</span>
+      </label>
+    </div>
+    <div class="controls--item" max="255">
+      <label class="controls--label">
+        <span class="controls--title">G</span>
+        <span class="controls--value-left">0</span>
+        <div class="controls--inputs">
+          <div class="controls--thumbs"><span></span><span></span></div>
+          <div class="controls--track"></div><input class="controls--input left" type="range" value="0" step="0.01" min="0" max="1">
+          <input class="controls--input" type="range" value="1" step="0.01" min="0" max="1">
+        </div>
+        <span class="controls--value-right">255</span>
+      </label>
+    </div>
+    <div class="controls--item" max="255">
+      <label class="controls--label">
+        <span class="controls--title">B</span>
+        <span class="controls--value-left">0</span>
+        <div class="controls--inputs">
+          <div class="controls--thumbs"><span></span><span></span></div>
+          <div class="controls--track"></div><input class="controls--input left" type="range" value="0" step="0.01" min="0" max="1">
+          <input class="controls--input" type="range" value="1" step="0.01" min="0" max="1">
+        </div>
+        <span class="controls--value-right">255</span>
+      </label>
+    </div>
+    <div class="controls--item disabled alpha" max="1">
+      <label class="controls--label">
+        <span class="controls--title">A</span>
+        <span class="controls--value-left">0</span>
+        <div class="controls--inputs">
+          <div class="controls--thumbs"><span></span><span></span></div>
+          <div class="controls--track"></div><input class="controls--input left" type="range" value="0" step="0.01" min="0" max="1">
+          <input class="controls--input" type="range" value="1" step="0.01" min="0" max="1">
+        </div>
+        <span class="controls--value-right">1</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="canvas-wrap"><canvas width="450px" id="canvas" class="canvas"></canvas></div>
+
+  <script src="./script.js"></script>
+</body>
+
+</html>
