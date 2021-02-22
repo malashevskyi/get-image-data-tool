@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileInput2 = document.getElementById('file-input2');
   const imageDataWidth = document.querySelector('.image-data--width span');
   const imageDataHeight = document.querySelector('.image-data--height span');
-  const imageDataCoords = document.querySelector('.image-data--coords span');
   const imageDataParticles = document.querySelector('.image-data--particles span');
   const imageSize = document.querySelector('.image-data--size span');
   const canvas = document.getElementById('canvas');
@@ -100,23 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // rgb controls input handler
   document.querySelectorAll('.controls--input').forEach((input) => {
     input.addEventListener('input', rgbControlChangeHandler);
-  })
-
-  // reset controls
-  document.querySelector('.controls--reset').addEventListener('click', () => {
-    const inputs = document.querySelectorAll('.controls--input');
-    
-    inputs.forEach((input) => {
-      const left = input.classList.contains('left');
-
-      if (left) {
-        input.value = 0;
-      } else {
-        input.value = 1;
-      }
-
-      rgbControlChangeHandler.call(input, { fix: false });
-    })
   })
 
   // change samples (rgb, rgba, xyrgb, xyrgba, xy)
