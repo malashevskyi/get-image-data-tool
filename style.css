@@ -65,7 +65,7 @@ body {
 .image-data {
   text-align: left;
   width: 550px;
-  margin: 0 0 20px;
+  margin: 0;
   padding-top: 40px;
   display: flex;
 }
@@ -165,7 +165,8 @@ body {
   margin: 0;
 }
 .image-data--subtitle code {
-  padding: 4px;
+  padding: 3px 10px;
+  margin-right: 5px;
 }
 
 .title {
