@@ -16,6 +16,43 @@ body {
   -webkit-app-region: no-drag;
   cursor: default;
 }
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  60% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.github {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.github svg {
+  transition: fill 0.1s ease;
+  pointer-events: none;
+  animation: scale 2s ease infinite normal both;
+}
+.github:hover svg {
+  fill: #23a6d5;
+}
+
 .canvas {
   position: relative;
   z-index: 3;
