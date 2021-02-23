@@ -96,6 +96,15 @@ body {
   padding-top: 40px;
   display: flex;
 }
+.controls--buttons,
+.image-data {
+  transition: opacity 0.3s ease;
+}
+
+.controls--buttons.inactive,
+.image-data.inactive {
+  opacity: 0.1
+}
 .image-data--title {
   font-size: 16px;
   margin: 0 0 10px 0;
@@ -213,6 +222,7 @@ body {
   padding: 0 15px;
   height: 40px;
   cursor: pointer;
+  transition: background-color .25s ease, color .25s ease;
 }
 .button-white {
   background-color: #fff;
@@ -225,9 +235,6 @@ label.button {
   font-weight: bold;
 }
 .button:hover {
-  background: #ddd;
-}
-.button-white:hover {
   background-color: #23a6d5;
   color: #fff;
 }
@@ -500,7 +507,7 @@ code em {
   z-index: 2;
 }
 .controls--info {
-  margin-bottom: 40px;
+  margin-bottom: 60px;
   display: block;
 }
 .controls--buttons {
@@ -509,6 +516,7 @@ code em {
   margin-bottom: 40px;
   justify-content: center;
 }
+
 .controls--title {
   width: 25px;
 }

@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function fileInputChnageHandler() {
     if (firstInput) {
       document.querySelector('.image-choose--start').classList.remove('is-active');
+      document.querySelectorAll('.inactive').forEach(el => el.classList.remove('inactive'));
       firstInput = false;
     }
 
@@ -240,14 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function displayImageData() {
     if (!image) return;
 
-    imageDataWidth.textContent = image.width + 'px';
-    imageDataHeight.textContent = image.height + 'px';
+    imageDataWidth.textContent = image.width + ' px';
+    imageDataHeight.textContent = image.height + ' px';
 
     imageDataParticles.textContent = particles.length;
 
     let size = copyData.length / 1024;
     if (size) size += 4;
-    imageSize.textContent = Math.round(size) +'KB';
+    imageSize.textContent = Math.round(size) +' KB';
   }
   
   function removeOverlay(force, x, y) {
