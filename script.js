@@ -161,6 +161,34 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.removeChild(dummy);
   }
 
+  // thumbs hover
+  const thumbs = document.querySelectorAll('.controls--input');
+  console.log(thumbs);
+  thumbs[0].addEventListener('mouseenter', function (e) {
+    console.log('hover');
+    this.classList.add('hovered')
+  })
+
+  // thumbs hover
+  document.querySelectorAll('.controls--input').forEach((input) => {
+    const spans = input.closest('.controls--inputs').querySelectorAll('.controls--thumbs span');
+    const left = input.classList.contains('left'); 
+
+    let activeSpan;
+    if (left) {
+      activeSpan = spans[0];
+    } else {
+      activeSpan = spans[1];
+    }
+    
+    input.addEventListener('mouseenter', function() {
+      activeSpan.classList.add('hovered');
+    });
+    input.addEventListener('mouseout', function() {
+      activeSpan.classList.remove('hovered');
+    });
+  })
+
   // set sample
   function setSample(text) {
     sampleDisplay.innerHTML = text
@@ -180,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const size = copyData.length / 1024 + 4;
     imageSize.textContent = Math.round(size) +'KB';
-    // imageDataCoords.textContent = copyData.length;
   }
   
   function removeOverlay(force, x, y) {
@@ -266,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxValue = item.getAttribute('max');
     // check left of right
     const left = this.classList.contains('left');
-    const track = item.querySelector('.controls--track');
+    // const track = item.querySelector('.controls--track');
     // two inputs of value
     const inputs = item.querySelectorAll('.controls--input')
     // containers display values
@@ -301,15 +328,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // set width of track to a difference between two inputs (selected zone)
-    track.style.width = (inp2V - inp1V) * inputWidth + (30 - 30 * inp2V - 30) + (30 - (inp2V - inp1V) * 30) + 'px';
-    // set offset for selected zone
-    track.style.left = inp1V * inputWidth + (30 - 30 * inp1V - 15) + 'px';
+    const rv = (1 - inp2V) * inputWidth - thumbWidth * (1 - inp2V);
+    const lv = inp1V * inputWidth - thumbWidth * inp1V;
 
-    thumbs1.style.left = inp1V * inputWidth - thumbWidth * inp1V  + 'px';
-    thumbs2.style.right = (1 - inp2V) * inputWidth - thumbWidth * (1 - inp2V) + 'px';
-    thumbs3.style.left = inp1V * inputWidth - thumbWidth * inp1V  + 'px';
-    thumbs4.style.right = (1 - inp2V) * inputWidth - thumbWidth * (1 - inp2V) + 'px';
+    thumbs1.style.left = lv  + 'px';
+    thumbs2.style.right = rv + 'px';
+    thumbs3.style.left = lv  + 'px';
+    thumbs4.style.right = rv + 'px';
+
+    val2.style.right = rv - 1 + 'px';
+    val1.style.left = lv - 1 + 'px';
 
     setRGBA();
     
