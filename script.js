@@ -206,7 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     imageDataParticles.textContent = particles.length;
 
-    const size = copyData.length / 1024 + 4;
+    let size = copyData.length / 1024;
+    if (size) size += 4;
     imageSize.textContent = Math.round(size) +'KB';
   }
   
@@ -371,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
       context.clearRect(0, 0, canvas.width, canvas.height);
       
       if (!imageData) {
+        console.log('image set');
         canvasContainer.classList.add('set');
         context.fillStyle = 'rgba(255, 0, 0, 0)';
         context.fillRect(0, 0, canvas.width, canvas.height);
@@ -394,8 +396,9 @@ document.addEventListener('DOMContentLoaded', () => {
         copyData = '';
 
         let index = 0;
-        for (let y = 0; y < image.width; y++) {
-          for (let x = 0; x < image.height; x++) {
+        // console.log(canvas.width, canas);
+        for (let y = 0; y < canvas.height; y++) {
+          for (let x = 0; x < canvas.width; x++) {
             const r = imageData[index];
             const g = imageData[index + 1];
             const b = imageData[index + 2];
@@ -417,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (
                   (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
                   (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  (b >= rgbaControls.b[0] && g <= rgbaControls.b[1]) &&
+                  (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
                   (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
                     particles.push(new Particle({ x, y, r, g, b, a }));
                   }
@@ -428,7 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (
                   (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
                   (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  (b >= rgbaControls.b[0] && g <= rgbaControls.b[1])) {
+                  (b >= rgbaControls.b[0] && b <= rgbaControls.b[1])) {
                     particles.push(new Particle({ x, y, r, g, b }));
                   }
                 break;
@@ -438,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (
                   (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
                   (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  (b >= rgbaControls.b[0] && g <= rgbaControls.b[1]) &&
+                  (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
                   (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
                     particles.push(new Particle({ x, y, r, g, b, a }));
                   }
@@ -448,10 +451,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (
                   (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
                   (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  (b >= rgbaControls.b[0] && g <= rgbaControls.b[1]) &&
+                  (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
                   (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
                     particles.push(new Particle({ x, y, r, g, b, a }));
                   }
+                break;
+              default:
                 break;
             }
 
