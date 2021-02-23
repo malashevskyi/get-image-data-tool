@@ -64,31 +64,28 @@
         </form>
         <button class="button copy-data" disabled>Copy data</button>
       </div>
-      <div class="sample">
-        <h4 class="sample--title">Sample: </h4>
-        <span>[123, 111, 153, ...]</span><span>  r      g       b</span>
-      </div>
+      <div class="sample"><code></code></div>
     </div>
     <div class="samples">
       <label class="samples--label">
         <input class="samples--input" tp="rgb" type="radio" name="samples" value="1" checked>
-        <span> <span>r g b</span> - all coordinates - you need to use jpg rather than png or svg, otherwise<br> when you set <code> this.color = `rgb(${r},${g},${b})` </code> all transparent parts (if exist) will be black </span>
+        <span>r g b</span>
       </label>
       <label class="samples--label">
         <input class="samples--input" tp="rgba" type="radio" name="samples" value="2">
-        <span> <span>r g b a</span> - all coordinates (.png) </span>
+        <span>r g b a</span>
       </label>
       <label class="samples--label">
         <input class="samples--input" tp="xyrgb" type="radio" name="samples" value="3">
-        <span> <span>x y  r g b</span> - selected coordinates with color (.png, .svg) - all coordinates with alpha < 1 excluded </span>
+        <span>x y  r g b</span>
       </label>
       <label class="samples--label">
         <input class="samples--input" tp="xyrgba" type="radio" name="samples" value="4">
-        <span> <span>x y  r g b a</span> - selected coordinates with color (.png, .svg) </span>
+        <span>x y  r g b a</span>
       </label>
       <label class="samples--label">
         <input class="samples--input" tp="xy" type="radio" name="samples" value="5">
-        <span> <span>x y</span> - only selected coordinates, if you don't need an image color (text, shapes animations)</span>
+        <span>x y</span>
       </label>
     </div>
     <div class="controls--item" max="255">

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const imageSize = document.querySelector('.image-data--size span');
   const canvas = document.getElementById('canvas');
   const context = canvas.getContext('2d');
-  const sampleDisplay = document.querySelectorAll('.sample span');
+  const sampleDisplay = document.querySelector('.sample code');
   const samples = document.querySelectorAll('.samples--input');
   const canvasContainer = document.querySelector('.canvas-wrap');
   const copyDataButton = document.querySelector('.copy-data');
@@ -18,6 +18,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const particles = [];
   const rgbaControls = { r: [0, 255], g: [0, 255], b: [0, 255], a: [0, 1] };
   const controlInputsWraps = document.querySelectorAll('.controls--item');
+  const samplesValues = {
+    rgb: `<em>Sample (r, g, b)</em><br>
+    <span><span class="b1">[</span><span class="b2">[</span><span class="n">123</span>, <span class="n">111</span>, <span class="n">153</span><span class="b2">]</span>, <span class="b2">[</span>...<span class="b2">]</span>, ...<span class="b1">]</span></span><br>
+    <em>Get all coordinates, you need to use jpg rather than png or svg, otherwise when you set: <span class="n">this.color = <span class="g">\`rgb(<span class="b2">\${</span><span class="r">r</span><span class="b2">}</span>,<span class="b2">\${</span><span class="r">g</span><span class="b2">}</span>,<span class="b2">\${</span><span class="r">b</span><span class="b2">}</span>)\`</span></span>all transparent parts (if exist) will be black.</em>`,
+    rgba: `<em>Sample (r, g, b, a)</em><br>
+    <span><span class="b1">[</span><span class="b2">[</span><span class="n">123</span>, <span class="n">111</span>, <span class="n">153</span>, <span class="n">0.89</span><span class="b2">]</span>, <span class="b2">[</span>...<span class="b2">]</span>, ...<span class="b1">]</span></span><br><em>Get all coordinates (e.g. png with small transparent parts).</em>`,
+    xyrgb: `<em>Sample (x, y, r, g, b)</em><br>
+    <span><span class="b1">[</span><span class="b2">[</span><span class="n">34</span>, <span class="n">20</span>, <span class="n">123</span>, <span class="n">111</span>, <span class="n">153</span><span class="b2">]</span>, <span class="b2">[</span>...<span class="b2">]</span>, ...<span class="b1">]</span></span><br><em>Selected coordinates with color. <br>All coordinates with alpha < 1 excluded. <br> (e.g. png or svg with large transparent parts)</em>`,
+    xyrgba: `<em>Sample (x, y, r, g, b, a)</em><br>
+    <span><span class="b1">[</span><span class="b2">[</span><span class="n">34</span>, <span class="n">20</span>, <span class="n">123</span>, <span class="n">111</span>, <span class="n">153</span>, <span class="n">0.89</span><span class="b2">]</span>, <span class="b2">[</span>...<span class="b2">]</span>, ...<span class="b1">]</span></span><br><em>Selected coordinates with color (e.g. png or svg with large transparent parts).</em>`,
+    xy: `<em>Sample (x, y)</em><br>
+    <span><span class="b1">[</span><span class="b2">[</span><span class="n">34</span>, <span class="n">20</span><span class="b2">]</span>, <span class="b2">[</span>...<span class="b2">]</span>, ...<span class="b1">]</span></span><br><em>Only selected coordinates without color, <br> if you don't need an image colors (e.g. text or some shapes)</em>`,
+  }
   let copyData = '';
   let firstInput = true;
   let imageData = null;
@@ -109,23 +122,23 @@ document.addEventListener('DOMContentLoaded', () => {
       switch (dataType) {
         case 'rgb':
           controlAlpha.classList.add('disabled');
-          setSample('[123, 111, 153, ...]', '  r      g       b');
+          setSample(samplesValues.rgb);
           break;
         case 'rgba':
           controlAlpha.classList.remove('disabled');
-          setSample('[123, 111, 153, 1, ...]', '  r      g       b    a');
+          setSample(samplesValues.rgba);
           break;
         case 'xyrgb':
           controlAlpha.classList.add('disabled');
-          setSample('[100, 120, 123, 111, 153, ...]', ' x        y      r       g       b');
+          setSample(samplesValues.xyrgb);
           break;
         case 'xyrgba':
           controlAlpha.classList.remove('disabled');
-          setSample('[100, 120, 123, 111, 153, 1, ...]', ' x        y      r       g       b    a');
+          setSample(samplesValues.xyrgba);
           break;
         case 'xy':
           controlAlpha.classList.remove('disabled');
-          setSample('[100, 120, ...]', '  x      y');
+          setSample(samplesValues.xy);
           break;
       }
 
@@ -149,11 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // set sample
-  function setSample(text1, text2) {
-    // console.log(text1, text2);
-    sampleDisplay[0].textContent = text1;
-    sampleDisplay[1].textContent = text2;
+  function setSample(text) {
+    sampleDisplay.innerHTML = text
+        .replace(/(\[)/g, "<span>$1</span>")
+        .replace(/(\])/g, "<span>$1</span>")
+        .replace(/(\/\/\s.+)/, "<em>$1</em>");
   }
+  setSample(samplesValues.rgb);
 
   function displayImageData() {
     if (!image) return;
