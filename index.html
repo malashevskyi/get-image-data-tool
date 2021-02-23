@@ -21,6 +21,7 @@
   <div class="image">
 
     <div class="image-choose">
+      <canvas id="canvas-image-choose" class="canvas-image-choose"></canvas>
       <div class="image-choose--start is-active">
         <h4>Drag and drop a file here or</h4>
         <form class="form">
@@ -45,10 +46,13 @@
       </div>
       <div class="image-data--info">
         <div class="image-data--particles">
-          <h4 class="image-data--subtitle"><code>particles.length</code>: </h4><span>...</span>
-        </div>
-        <div class="image-data--size">
-          <h4 class="image-data--subtitle">DATA SIZE: </h4><span>...</span>
+          <h4 class="image-data--subtitle">
+            <code>
+              <span>particles.length</span>:
+              <span class="length"></span>
+              <em>// DATA SIZE: <span class="size"></span></em>
+            </code>
+          </h4>
         </div>
       </div>
     </div>
@@ -68,7 +72,7 @@
     </div>
     <div class="samples">
       <label class="samples--label">
-        <input class="samples--input" tp="rgb" type="radio" name="samples" value="1" checked>
+        <input class="samples--input" tp="rgb" type="radio" name="samples" value="1">
         <span>r g b</span>
       </label>
       <label class="samples--label">
@@ -76,7 +80,7 @@
         <span>r g b a</span>
       </label>
       <label class="samples--label">
-        <input class="samples--input" tp="xyrgb" type="radio" name="samples" value="3">
+        <input class="samples--input" tp="xyrgb" type="radio" name="samples" value="3" checked>
         <span>x y  r g b</span>
       </label>
       <label class="samples--label">
@@ -88,6 +92,19 @@
         <span>x y</span>
       </label>
     </div>
+
+    <code class="controls--info">
+      <em>
+        You can control rgba only with options that include <span class="n">x</span> and <span class="n">y</span> coordinates; otherwise, you will copy all data <br>(<span class="n">image.width <span class="w">*</span> image.height</span>)
+      </em>
+      <em>
+        With rgba control you can easily get rid of an image background, or some image part you don't need.
+      </em>
+      <em>
+        (e.g if you have a red (255, 0, 0) background, you can decrease a little bit R value and all red particles will be removed.)
+      </em>
+    </code>
+
     <div class="controls--item r" max="255">
       <label class="controls--label">
         

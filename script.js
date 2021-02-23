@@ -2,19 +2,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const errorBlock = document.querySelector('.error');
   const imageChooseOverlay = document.querySelector('.image-choose--overlay');
   const imageChoose = document.querySelector('.image-choose');
+  const iCWidth = imageChoose.offsetWidth;
+  const iCHeight = imageChoose.offsetHeight;
+
   const fileInput1 = document.getElementById('file-input1');
   const fileInput2 = document.getElementById('file-input2');
   const imageDataWidth = document.querySelector('.image-data--width span');
   const imageDataHeight = document.querySelector('.image-data--height span');
-  const imageDataParticles = document.querySelector('.image-data--particles span');
-  const imageSize = document.querySelector('.image-data--size span');
+  const imageDataParticles = document.querySelector('.image-data--particles .length');
+  const imageSize = document.querySelector('.image-data--particles .size');
+
   const canvas = document.getElementById('canvas');
   const context = canvas.getContext('2d');
+
+  const canvasChoose = document.getElementById('canvas-image-choose');
+  const contextChoose = canvasChoose.getContext('2d');
+  const grd = context.createLinearGradient(0, 0, iCWidth, iCHeight);
+  grd.addColorStop(0,   `hsl(0, 50%, 50%)`);
+  grd.addColorStop(0.1, `hsl(30, 50%, 50%)`);
+  grd.addColorStop(0.2, `hsl(60, 50%, 50%)`);
+  grd.addColorStop(0.3, `hsl(90, 50%, 50%)`);
+  grd.addColorStop(0.4, `hsl(120, 50%, 50%)`);
+  grd.addColorStop(0.5, `hsl(150, 50%, 50%)`);
+  grd.addColorStop(0.6, `hsl(180, 50%, 50%)`);
+  grd.addColorStop(0.7, `hsl(210, 50%, 50%)`);
+  grd.addColorStop(0.8, `hsl(240, 50%, 50%)`);
+  grd.addColorStop(0.9, `hsl(270, 50%, 50%)`);
+  grd.addColorStop(1,   `hsl(300, 50%, 50%)`);
+
   const sampleDisplay = document.querySelector('.sample code');
   const samples = document.querySelectorAll('.samples--input');
   const canvasContainer = document.querySelector('.canvas-wrap');
   const copyDataButton = document.querySelector('.copy-data');
-  const controlAlpha = document.querySelector('.controls--item.alpha');
+  // const controlAlpha = document.querySelector('.controls--item.alpha');
+  const controlItems = document.querySelectorAll('.controls--item');
   const particles = [];
   const rgbaControls = { r: [0, 255], g: [0, 255], b: [0, 255], a: [0, 1] };
   const controlInputsWraps = document.querySelectorAll('.controls--item');
@@ -29,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     xyrgba: `<em>Sample (x, y, r, g, b, a)</em><br>
     <span><span class="b1">[</span><span class="b2">[</span><span class="n">34</span>, <span class="n">20</span>, <span class="n">123</span>, <span class="n">111</span>, <span class="n">153</span>, <span class="n">0.89</span><span class="b2">]</span>, <span class="b2">[</span>...<span class="b2">]</span>, ...<span class="b1">]</span></span><br><em>Selected coordinates with color (e.g. png or svg with large transparent parts).</em>`,
     xy: `<em>Sample (x, y)</em><br>
-    <span><span class="b1">[</span><span class="b2">[</span><span class="n">34</span>, <span class="n">20</span><span class="b2">]</span>, <span class="b2">[</span>...<span class="b2">]</span>, ...<span class="b1">]</span></span><br><em>Only selected coordinates without color, <br> if you don't need an image colors (e.g. text or some shapes)</em>`,
+    <span><span class="b1">[</span><span class="b2">[</span><span class="n">34</span>, <span class="n">20</span><span class="b2">]</span>, <span class="b2">[</span>...<span class="b2">]</span>, ...<span class="b1">]</span></span><br><em>Only selected coordinates without color, <br> if you don't need an image colors (e.g. text, icons or shapes)</em>`,
   }
   let copyData = '';
   let firstInput = true;
@@ -37,7 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let imageUrl = null;
   let image = null;
   let errorTimeout = null;
-  let dataType = 'rgb';
+  let dataType = 'xyrgb';
+  let offsetTick = 0;
 
   // remove drop overlay when it dropped inside "imageChoose" block
   // check position through mousemove
@@ -121,23 +143,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
       switch (dataType) {
         case 'rgb':
-          controlAlpha.classList.add('disabled');
+          controlItems.forEach((item) => {
+            item.classList.add('disabled');
+          })
           setSample(samplesValues.rgb);
           break;
         case 'rgba':
-          controlAlpha.classList.remove('disabled');
+          controlItems.forEach((item) => {
+            item.classList.add('disabled');
+          })
           setSample(samplesValues.rgba);
           break;
         case 'xyrgb':
-          controlAlpha.classList.add('disabled');
+          controlItems.forEach((item, i) => {
+            if (i !== 3) {
+              item.classList.remove('disabled');
+            } else {
+              item.classList.add('disabled');
+            }
+          })
           setSample(samplesValues.xyrgb);
           break;
         case 'xyrgba':
-          controlAlpha.classList.remove('disabled');
+          controlItems.forEach((item) => {
+            item.classList.remove('disabled');
+          })
           setSample(samplesValues.xyrgba);
           break;
         case 'xy':
-          controlAlpha.classList.remove('disabled');
+          controlItems.forEach((item) => {
+            item.classList.remove('disabled');
+          })
           setSample(samplesValues.xy);
           break;
       }
@@ -155,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const dummy = document.createElement("textarea");
     document.body.appendChild(dummy);
     dummy.value = text;
-    // console.log(text);
     dummy.select();
     document.execCommand("copy");
     document.body.removeChild(dummy);
@@ -163,9 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // thumbs hover
   const thumbs = document.querySelectorAll('.controls--input');
-  console.log(thumbs);
   thumbs[0].addEventListener('mouseenter', function (e) {
-    console.log('hover');
     this.classList.add('hovered')
   })
 
@@ -189,6 +222,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })
 
+  // get new width and height for canvas dash animation
+  window.addEventListener('resize', () => {
+    const iCWidth = imageChoose.offsetWidth;
+    const iCHeight = imageChoose.offsetHeight;
+  })
+
   // set sample
   function setSample(text) {
     sampleDisplay.innerHTML = text
@@ -196,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .replace(/(\])/g, "<span>$1</span>")
         .replace(/(\/\/\s.+)/, "<em>$1</em>");
   }
-  setSample(samplesValues.rgb);
+  setSample(samplesValues.xyrgb);
 
   function displayImageData() {
     if (!image) return;
@@ -349,9 +388,34 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 50);
     }
   }
- 
-
+  
   function animate() {
+
+    function imageChooseAnimate() {
+      const context = contextChoose;
+  
+      canvasChoose.width = iCWidth;
+      canvasChoose.height = iCHeight;
+
+      if (offsetTick >= 14) offsetTick = 0;
+      offsetTick += 0.5;
+
+
+      context.clearRect(0, 0, iCWidth, iCHeight);
+
+      context.beginPath();
+      context.rect(0, 0, iCWidth, iCHeight);
+      context.lineWidth = 4;
+      context.strokeStyle = grd;
+      context.setLineDash([7, 7]);
+      context.lineDashOffset = offsetTick;
+
+      context.stroke();
+      context.closePath();
+    }
+    imageChooseAnimate();
+
+
     if (!imageUrl) {
       requestAnimationFrame(animate)
       return;
@@ -372,7 +436,6 @@ document.addEventListener('DOMContentLoaded', () => {
       context.clearRect(0, 0, canvas.width, canvas.height);
       
       if (!imageData) {
-        console.log('image set');
         canvasContainer.classList.add('set');
         context.fillStyle = 'rgba(255, 0, 0, 0)';
         context.fillRect(0, 0, canvas.width, canvas.height);
@@ -396,7 +459,6 @@ document.addEventListener('DOMContentLoaded', () => {
         copyData = '';
 
         let index = 0;
-        // console.log(canvas.width, canas);
         for (let y = 0; y < canvas.height; y++) {
           for (let x = 0; x < canvas.width; x++) {
             const r = imageData[index];
@@ -408,22 +470,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             switch (dataType) {
               case 'rgb':
-                if (
-                  (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
-                  (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  (b >= rgbaControls.b[0] && b <= rgbaControls.b[1])) {
-                    particles.push(new Particle({ x, y, r, g, b }));
-                  }
+                particles.push(new Particle({ x, y, r, g, b }));
+                // if (
+                  // (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
+                  // (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
+                  // (b >= rgbaControls.b[0] && b <= rgbaControls.b[1])) {
+                  // }
                 break;
               case 'rgba':
-                if (a === 0) break;
-                if (
-                  (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
-                  (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
-                  (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
-                    particles.push(new Particle({ x, y, r, g, b, a }));
-                  }
+                // if (a === 0) break;
+                particles.push(new Particle({ x, y, r, g, b, a }));
+                // if (
+                //   (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
+                //   (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
+                //   (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
+                //   (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
+                //   }
                 break;
               case 'xyrgb':
                 if (a < 1) break;
@@ -463,14 +525,8 @@ document.addEventListener('DOMContentLoaded', () => {
             index += 4;
             
             copyDataButton.disabled = false;
-
-            // console.log(copyData);
-            
           }
         }
-      
-        // console.log(copyData);
-        // console.log('-------------');
 
         displayImageData();
       }

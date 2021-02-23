@@ -20,6 +20,15 @@ body {
   position: relative;
   z-index: 3;
 }
+.canvas-image-choose {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .canvas-wrap {
   display: flex;
   justify-content: center;
@@ -52,8 +61,23 @@ body {
 .image {
   position: relative;
 }
+.image-data code {
+  background-color: #282c34;
+  padding: 10px 8px;
+}
+.image-data code span:nth-child(1) {
+  color: #c08f64;
+  padding-right: 0;
+}
+.image-data code em {
+  display: block;
+  padding-left: 10px;
+}
+.image-data em span {
+  padding: 0;
+}
 .image-choose {
-  border: 2px dashed #ccc;
+  /* border: 2px dashed #ccc; */
   width: 100%;
   height: calc(100% + 63px);
   top: 0;
@@ -93,7 +117,7 @@ body {
 .image-data--info > div {
   display: flex;
   align-items: center;
-  margin: 5px 0;
+  margin-bottom: 5px;
   line-height: 20px;
 }
 .image-data span {
@@ -166,8 +190,9 @@ body {
   margin: 0;
 }
 .image-data--subtitle code {
-  padding: 3px 10px;
-  margin-right: 5px;
+}
+.image-data--subtitle .length {
+  padding-left: 0;
 }
 
 .title {
@@ -219,10 +244,10 @@ label.button {
 .image-choose--overlay, .image-choose--start {
   display: flex;
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  left: 3px;
+  top: 3px;
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
   z-index: 10;
   align-items: center;
   justify-content: center;
@@ -287,7 +312,7 @@ label.button {
 /* --------------  SAMPLES ------------------- */
 .samples {
   display: flex;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
@@ -325,6 +350,9 @@ code {
 }
 code .b1 {
   color: #f6d52f;
+}
+code .w {
+  color: #fff;
 }
 code .b2 {
   color: #805abc;
@@ -471,6 +499,10 @@ code em {
   position: relative;
   z-index: 2;
 }
+.controls--info {
+  margin-bottom: 40px;
+  display: block;
+}
 .controls--buttons {
   display: flex;
   align-items: center;
@@ -508,8 +540,8 @@ code em {
   background-color: rgba(239, 239, 239, 0.8);
   position: absolute;
   width: calc(100% + 100px);
-  height: 65px;
-  top: -30px;
+  height: 70px;
+  top: -31px;
   left: -51px;
   z-index: 100;
 }
