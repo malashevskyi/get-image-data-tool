@@ -276,6 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // thumbs borders
     const thumbs1 = item.querySelectorAll('.controls--thumbs span')[0];
     const thumbs2 = item.querySelectorAll('.controls--thumbs span')[1];
+    const thumbs3 = item.querySelectorAll('.controls--thumbs span')[2];
+    const thumbs4 = item.querySelectorAll('.controls--thumbs span')[3];
     
     const inputWidth = this.offsetWidth;
     const thumbWidth = 30;
@@ -300,12 +302,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // set width of track to a difference between two inputs (selected zone)
-    track.style.width = (inp2V - inp1V) * inputWidth + thumbWidth + 'px';
+    track.style.width = (inp2V - inp1V) * inputWidth + (30 - 30 * inp2V - 30) + (30 - (inp2V - inp1V) * 30) + 'px';
     // set offset for selected zone
-    track.style.left = inp1V * inputWidth - thumbWidth / 2 + 'px';
+    track.style.left = inp1V * inputWidth + (30 - 30 * inp1V - 15) + 'px';
 
-    thumbs1.style.left = inp1V * inputWidth - thumbWidth / 2 - thumbWidth * inp1V  + 'px';
-    thumbs2.style.right = (1 - inp2V) * inputWidth - thumbWidth / 2 - thumbWidth * (1 - inp2V) + 'px';
+    thumbs1.style.left = inp1V * inputWidth - thumbWidth * inp1V  + 'px';
+    thumbs2.style.right = (1 - inp2V) * inputWidth - thumbWidth * (1 - inp2V) + 'px';
+    thumbs3.style.left = inp1V * inputWidth - thumbWidth * inp1V  + 'px';
+    thumbs4.style.right = (1 - inp2V) * inputWidth - thumbWidth * (1 - inp2V) + 'px';
 
     setRGBA();
     
