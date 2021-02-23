@@ -686,3 +686,56 @@ input[type=range]::-moz-range-thumb {
 .danger strong:nth-of-type(2) {
   color: green;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .image-data--composition {
+    display: none;
+  }
+  .image-data--info {
+    padding: 0;
+  }
+  .image-data {
+    text-align: center;
+    justify-content: center;
+    padding-top: 25px;
+  }
+  .controls, .canvas-wrap {
+    width: 435px;
+  }
+  .canvas-wrap::before {
+    font-size: 11px;
+  }
+  .title {
+    font-size: 22px;
+  }
+}
+@media only screen and (max-width: 450px) {
+  .controls, .canvas-wrap {
+    width: 300px;
+  }
+  .canvas-wrap::before {
+    content: 'Canvas';
+  }
+  .title {
+    font-size: 18px;
+  }
+  .canvas-wrap {
+    margin-bottom: 35px;
+  }
+  .samples--label span {
+    font-size: 8px;
+    padding: 6px;
+  }
+  .controls--buttons {
+    margin-bottom: 70px;
+  }
+  .image-choose--start h4 {
+    font-size: 12px;
+    padding: 12px;
+  }
+
+  .error {
+    width: 300px;
+  }
+}

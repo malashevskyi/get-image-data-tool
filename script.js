@@ -2,34 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const errorBlock = document.querySelector('.error');
   const imageChooseOverlay = document.querySelector('.image-choose--overlay');
   const imageChoose = document.querySelector('.image-choose');
-  const iCWidth = imageChoose.offsetWidth;
-  const iCHeight = imageChoose.offsetHeight;
-
+  
   const fileInput1 = document.getElementById('file-input1');
   const fileInput2 = document.getElementById('file-input2');
   const imageDataWidth = document.querySelector('.image-data--width span');
   const imageDataHeight = document.querySelector('.image-data--height span');
   const imageDataParticles = document.querySelector('.image-data--particles .length');
   const imageSize = document.querySelector('.image-data--particles .size');
-
+  
   const canvas = document.getElementById('canvas');
   const context = canvas.getContext('2d');
-
+  
   const canvasChoose = document.getElementById('canvas-image-choose');
   const contextChoose = canvasChoose.getContext('2d');
-  const grd = context.createLinearGradient(0, 0, iCWidth, iCHeight);
-  grd.addColorStop(0,   `hsl(0, 50%, 50%)`);
-  grd.addColorStop(0.1, `hsl(30, 50%, 50%)`);
-  grd.addColorStop(0.2, `hsl(60, 50%, 50%)`);
-  grd.addColorStop(0.3, `hsl(90, 50%, 50%)`);
-  grd.addColorStop(0.4, `hsl(120, 50%, 50%)`);
-  grd.addColorStop(0.5, `hsl(150, 50%, 50%)`);
-  grd.addColorStop(0.6, `hsl(180, 50%, 50%)`);
-  grd.addColorStop(0.7, `hsl(210, 50%, 50%)`);
-  grd.addColorStop(0.8, `hsl(240, 50%, 50%)`);
-  grd.addColorStop(0.9, `hsl(270, 50%, 50%)`);
-  grd.addColorStop(1,   `hsl(300, 50%, 50%)`);
-
+  
   const sampleDisplay = document.querySelector('.sample code');
   const samples = document.querySelectorAll('.samples--input');
   const canvasContainer = document.querySelector('.canvas-wrap');
@@ -52,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     xy: `<em>Sample (x, y)</em><br>
     <span><span class="b1">[</span><span class="b2">[</span><span class="n">34</span>, <span class="n">20</span><span class="b2">]</span>, <span class="b2">[</span>...<span class="b2">]</span>, ...<span class="b1">]</span></span><br><em>Only selected coordinates without color, <br> if you don't need an image colors (e.g. text, icons or shapes)</em>`,
   }
+  let iCHeight = imageChoose.offsetHeight;
+  let iCWidth = imageChoose.offsetWidth;
   let copyData = '';
   let firstInput = true;
   let imageData = null;
@@ -60,6 +48,23 @@ document.addEventListener('DOMContentLoaded', () => {
   let errorTimeout = null;
   let dataType = 'xyrgb';
   let offsetTick = 0;
+  let grd; 
+  
+  function createGradient() {
+    grd = context.createLinearGradient(0, 0, iCWidth, iCHeight);
+    grd.addColorStop(0,   `hsl(0, 50%, 50%)`);
+    grd.addColorStop(0.1, `hsl(30, 50%, 50%)`);
+    grd.addColorStop(0.2, `hsl(60, 50%, 50%)`);
+    grd.addColorStop(0.3, `hsl(90, 50%, 50%)`);
+    grd.addColorStop(0.4, `hsl(120, 50%, 50%)`);
+    grd.addColorStop(0.5, `hsl(150, 50%, 50%)`);
+    grd.addColorStop(0.6, `hsl(180, 50%, 50%)`);
+    grd.addColorStop(0.7, `hsl(210, 50%, 50%)`);
+    grd.addColorStop(0.8, `hsl(240, 50%, 50%)`);
+    grd.addColorStop(0.9, `hsl(270, 50%, 50%)`);
+    grd.addColorStop(1,   `hsl(300, 50%, 50%)`);
+  }
+  createGradient();
 
   // remove drop overlay when it dropped inside "imageChoose" block
   // check position through mousemove
@@ -225,8 +230,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // get new width and height for canvas dash animation
   window.addEventListener('resize', () => {
-    const iCWidth = imageChoose.offsetWidth;
-    const iCHeight = imageChoose.offsetHeight;
+    iCWidth = imageChoose.offsetWidth;
+    iCHeight = imageChoose.offsetHeight;
+
+    createGradient();
   })
 
   // set sample
@@ -394,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function imageChooseAnimate() {
       const context = contextChoose;
+      context.clearRect(0, 0, iCWidth, iCHeight);
   
       canvasChoose.width = iCWidth;
       canvasChoose.height = iCHeight;
@@ -402,7 +410,6 @@ document.addEventListener('DOMContentLoaded', () => {
       offsetTick += 0.5;
 
 
-      context.clearRect(0, 0, iCWidth, iCHeight);
 
       context.beginPath();
       context.rect(0, 0, iCWidth, iCHeight);
