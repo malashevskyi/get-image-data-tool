@@ -12,7 +12,7 @@ Only drawing without interaction works in 60 FPS on my computer (Ryzen 5 2600 3.
 - [Particle example](#particle-example)
 - [Iteration examples](#iteration-examples)
 
-![Screenshot](screenshot.jpg)
+![Screenshot](assets/screenshot.jpg)
 
 ## Why
 When I use `context.getImageData()` FPS sags even if I want to get `1px`. More problem if I need to get data from several images, or I use several canvases or use routing.
