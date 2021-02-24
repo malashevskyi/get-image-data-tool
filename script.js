@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const samples = document.querySelectorAll('.samples--input');
   const canvasContainer = document.querySelector('.canvas-wrap');
   const copyDataButton = document.querySelector('.copy-data');
-  // const controlAlpha = document.querySelector('.controls--item.alpha');
   const controlItems = document.querySelectorAll('.controls--item');
   const particles = [];
   const rgbaControls = { r: [0, 255], g: [0, 255], b: [0, 255], a: [0, 1] };
@@ -191,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // copy data
   copyDataButton.addEventListener('click', (e) => {
-    copyToClipboard(copyData);
+    copyToClipboard(`[${copyData}]`);
   });
   function copyToClipboard(text) {
     const dummy = document.createElement("textarea");
@@ -466,74 +465,58 @@ document.addEventListener('DOMContentLoaded', () => {
         // clear copy data
         copyData = '';
 
-        let index = 0;
-        for (let y = 0; y < canvas.height; y++) {
-          for (let x = 0; x < canvas.width; x++) {
-            const r = imageData[index];
-            const g = imageData[index + 1];
-            const b = imageData[index + 2];
-            const a = Math.floor(((imageData[index + 3] / 255)) * 100) / 100;
-            // particles.push(new Particle({ x, y, r, g, b, a }));
-            // continue;
+        for (let i = 0; i < imageData.length; i += 4) {
+          const x = (i % (image.width * 4)) / 4;
+          const y = Math.floor(i / (image.width * 4));
 
-            switch (dataType) {
-              case 'rgb':
-                particles.push(new Particle({ x, y, r, g, b }));
-                // if (
-                  // (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
-                  // (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  // (b >= rgbaControls.b[0] && b <= rgbaControls.b[1])) {
-                  // }
-                break;
-              case 'rgba':
-                // if (a === 0) break;
-                particles.push(new Particle({ x, y, r, g, b, a }));
-                // if (
-                //   (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
-                //   (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                //   (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
-                //   (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
-                //   }
-                break;
-              case 'xyrgb':
-                if (a < 1) break;
+          const r = imageData[i];
+          const g = imageData[i + 1];
+          const b = imageData[i + 2];
+          const a = Math.floor(((imageData[i + 3] / 255)) * 100) / 100;
+          switch (dataType) {
+            case 'rgb':
+              particles.push(new Particle({ x, y, r, g, b }));
+              break;
+            case 'rgba':
+              particles.push(new Particle({ x, y, r, g, b, a }));
+              break;
+            case 'xyrgb':
+              if (a < 1) break;
 
-                if (
-                  (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
-                  (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  (b >= rgbaControls.b[0] && b <= rgbaControls.b[1])) {
-                    particles.push(new Particle({ x, y, r, g, b }));
-                  }
-                break;
-              case 'xyrgba':
-                if (a === 0) break;
+              if (
+                (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
+                (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
+                (b >= rgbaControls.b[0] && b <= rgbaControls.b[1])) {
+                  particles.push(new Particle({ x, y, r, g, b }));
+                }
+              break;
+            case 'xyrgba':
+              if (a === 0) break;
 
-                if (
-                  (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
-                  (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
-                  (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
-                    particles.push(new Particle({ x, y, r, g, b, a }));
-                  }
-                break;
-              case 'xy':
-                if (a === 0) break;
-                if (
-                  (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
-                  (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
-                  (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
-                  (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
-                    particles.push(new Particle({ x, y, r, g, b, a }));
-                  }
-                break;
-              default:
-                break;
-            }
-
-            index += 4;
-            
-            copyDataButton.disabled = false;
+              if (
+                (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
+                (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
+                (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
+                (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
+                  particles.push(new Particle({ x, y, r, g, b, a }));
+                }
+              break;
+            case 'xy':
+              if (a === 0) break;
+              if (
+                (r >= rgbaControls.r[0] && r <= rgbaControls.r[1]) &&
+                (g >= rgbaControls.g[0] && g <= rgbaControls.g[1]) &&
+                (b >= rgbaControls.b[0] && b <= rgbaControls.b[1]) &&
+                (a >= rgbaControls.a[0] && a <= rgbaControls.a[1])) {
+                  particles.push(new Particle({ x, y, r, g, b, a }));
+                }
+              break;
+            default:
+              break;
           }
+          
+          copyDataButton.disabled = false;
+
         }
 
         displayImageData();
@@ -542,13 +525,37 @@ document.addEventListener('DOMContentLoaded', () => {
       particles.forEach(particle => {
         particle.draw();
       });
-      
-      // dataType
 
     }
     requestAnimationFrame(animate)
   }
   animate();
+
+  function addStrToCopyData(x, y, r, g, b, a) {
+    let d;
+    switch (dataType) {
+      case 'rgb':
+        d = `[${r},${g},${b}]`;
+        break;
+      case 'rgba':
+        d = `[${r},${g},${b},${a}]`;
+        break;
+      case 'xyrgb':
+        d = `[${x},${y},${r},${g},${b}]`;
+        break;
+      case 'xyrgba':
+        d = `[${x},${y},${r},${g},${b},${a}]`;
+        break;
+      case 'xy':
+        d = `[${x},${y}]`;
+        break;
+    }
+    if (copyData.length !== 0) {
+      copyData += `,${d}`;
+    } else {
+      copyData += `${d}`;
+    }
+  }
 
   class Particle {
     constructor({ x, y, r, b, g, a }) {
@@ -558,27 +565,8 @@ document.addEventListener('DOMContentLoaded', () => {
       this.g = g;
       this.b = b;
       this.a = a;
-
-      let d;
-      switch (dataType) {
-        case 'rgb':
-          d = `[${r},${g},${b}]`;
-          break;
-        case 'rgba':
-          d = `[${r},${g},${b},${a}]`;
-          break;
-        case 'xyrgb':
-          d = `[${x},${y},${r},${g},${b}]`;
-          break;
-        case 'xyrgba':
-          d = `[${x},${y},${r},${g},${b},${a}]`;
-          break;
-        case 'xy':
-          d = `[${x},${y}]`;
-          break;
-      }
-      copyData += d;
-
+      addStrToCopyData(x, y, r, g, b, a);
+      
       this.color = this.a !== undefined ? `rgba(${r},${g},${b},${a})` :`rgb(${r},${g},${b})`;
     }
 
