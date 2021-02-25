@@ -33,44 +33,11 @@ body {
 }
 
 .modal-success {
+  width: 100px;
   position: fixed;
+  background-color: rgba(0, 0, 0, 0.6);
   top: 0;
   left: 0;
-  width: 100%;
-  height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.8);
-  opacity: 0;
-  z-index: 10;
-  transition: opacity 0.3s linear;
-}
-.modal-success::before {
-  content: '';
-  width: 100%;
-  height: 3px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #23a6d5;
-  z-index: 1;
-  transform: translate3d(-100%, 0, 0);
-  transform-origin: 0 0;
-  transition: transform 0s linear 0.3s;
-  will-change: transform;
-}
-.modal-success.is-active {
-  opacity: 1;
-}
-.modal-success.is-active::before {
-  transition: transform 10s linear;
-  transform: translate3d(0%, 0, 0);
-}
-.modal-title {
-  color: #fff;
-  text-transform: uppercase;
-  margin-right: 10px;
 }
 
 .github {
@@ -84,7 +51,6 @@ body {
   justify-content: center;
   cursor: pointer;
   border-radius: 50%;
-  z-index: 11;
 }
 .github svg {
   transition: fill 0.1s ease;
@@ -93,14 +59,6 @@ body {
 }
 .github:hover svg {
   fill: #23a6d5;
-}
-.github-link {
-  color: #4ac3ff;
-  transition: .25s ease;
-  cursor: pointer;
-}
-.github-link:hover {
-  color: #a7e8ff;
 }
 
 .canvas {
@@ -210,8 +168,7 @@ body {
 .image-data--info {
   padding-left: 50px;
 }
-.image-data--particles {
-  font-size: 14px;
+.image-data--info > div {
   display: flex;
   align-items: center;
   margin-bottom: 5px;
@@ -281,7 +238,13 @@ body {
   transform: rotate(225deg);
   transform-origin: 50% 50%;
 }
-
+.image-data--subtitle {
+  font-weight: 400;
+  font-size: 14px;
+  margin: 0;
+}
+.image-data--subtitle code {
+}
 .image-data--subtitle .length {
   padding-left: 0;
 }
@@ -430,7 +393,7 @@ label.button {
   z-index: -1;
 }
 .samples--input:checked + span {
-  background-color: #282c34;
+  background-color: #23a6d5;
   color: #fff;
 }
 code {

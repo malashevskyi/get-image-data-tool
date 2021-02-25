@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const canvasChoose = document.getElementById('canvas-image-choose');
   const contextChoose = canvasChoose.getContext('2d');
+
+  const modalSuccess = document.querySelector('.modal-success');
   
   const sampleDisplay = document.querySelector('.sample code');
   const samples = document.querySelectorAll('.samples--input');
@@ -189,8 +191,19 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // copy data
+  let modalSuccessTimeout;
   copyDataButton.addEventListener('click', (e) => {
     copyToClipboard(`[${copyData}]`);
+    // remove prev modal
+    modalSuccess.classList.remove('is-active');
+    clearTimeout(modalSuccessTimeout);
+    
+    setTimeout(() => {
+      modalSuccess.classList.add('is-active');
+      modalSuccessTimeout = setTimeout(() => {
+        modalSuccess.classList.remove('is-active');
+      }, 10000);
+    }, 350);
   });
   function copyToClipboard(text) {
     const dummy = document.createElement("textarea");
