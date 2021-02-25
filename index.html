@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="./assets/style.css">
 </head>
 
-<body>
+<body class="first">
   <div class="error danger">
     Sorry, this extension is not allowed. <br>
     Your file: <strong class="file"></strong> <br>
@@ -36,7 +36,7 @@
   </div>
 
   <div class="modal-success">
-    <h4 class="modal-title">Data copied to the clipboard</h4>
+    <h4 class="modal-title"><span id="copyTp"></span> copied to the clipboard</h4>
     <svg 
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -75,7 +75,7 @@
       <div class="image-choose--overlay"></div>
     </div>
 
-    <div class="image-data inactive">
+    <div class="container image-data inactive">
       <div class="image-data--composition">
         <h2 class="image-data--title">Image <br> info</h2>
         <div class="image-data--width">
@@ -100,17 +100,27 @@
   
   </div>
 
-  <div class="controls">
-    <div class="controls--head">
-      <div class="controls--buttons inactive">
-        <form class="form">
-          <input class="file-input" type="file" id="file-input2">
-          <label class="button" for="file-input2">Choose a file</label>
-        </form>
-        <button class="button copy-data" disabled>Copy data</button>
-      </div>
-      <div class="sample"><code></code></div>
+  <div class="container head-buttons inactive">
+    <form class="form">
+      <input class="file-input" type="file" id="file-input2">
+      <label class="button" for="file-input2">Choose a file</label>
+    </form>
+    <button class="button copy-data" disabled>Copy data</button>
+  </div>
+
+  <div class="copy-code">
+    <div class="copy-code--buttons">
+      <button tp="particle" class="copy-code--button button">Copy Particle</button>
+      <button tp="rgb" class="copy-code--button button">Copy rgb / rgba loop</button>
+      <button tp="xyrgb" class="copy-code--button button">Copy xy rgb / rgba loop</button>
+      <button tp="xy" class="copy-code--button button">Copy xy loop</button>
     </div>
+  </div>
+
+  <div class="container controls">
+
+    <div class="sample"><code></code></div>
+
     <div class="samples">
       <label class="samples--label">
         <input class="samples--input" tp="rgb" type="radio" name="samples" value="1">
@@ -217,9 +227,10 @@
 
       </label>
     </div>
+
   </div>
 
-  <div class="canvas-wrap"><canvas width="450px" id="canvas" class="canvas"></canvas></div>
+  <div class="container canvas-wrap"><canvas width="450px" id="canvas" class="canvas"></canvas></div>
 
   <script src="./assets/script.js"></script>
 </body>

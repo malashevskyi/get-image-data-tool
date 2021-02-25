@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const errorBlock = document.querySelector('.error');
   const imageChooseOverlay = document.querySelector('.image-choose--overlay');
   const imageChoose = document.querySelector('.image-choose');
+  const body = document.querySelector('body');
   
   const fileInput1 = document.getElementById('file-input1');
   const fileInput2 = document.getElementById('file-input2');
@@ -15,7 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const canvasChoose = document.getElementById('canvas-image-choose');
   const contextChoose = canvasChoose.getContext('2d');
-
+  
+  const copyTp = document.getElementById('copyTp');
   const modalSuccess = document.querySelector('.modal-success');
   
   const sampleDisplay = document.querySelector('.sample code');
@@ -23,6 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const canvasContainer = document.querySelector('.canvas-wrap');
   const copyDataButton = document.querySelector('.copy-data');
   const controlItems = document.querySelectorAll('.controls--item');
+
+  const copyCodeButtons = document.querySelectorAll('.copy-code--button');
+
   const particles = [];
   const rgbaControls = { r: [0, 255], g: [0, 255], b: [0, 255], a: [0, 1] };
   const controlInputsWraps = document.querySelectorAll('.controls--item');
@@ -45,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let firstInput = true;
   let imageData = null;
   let imageUrl = null;
-  let image = null;
+  let image = {};
   let errorTimeout = null;
   let dataType = 'xyrgb';
   let offsetTick = 0;
@@ -103,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (firstInput) {
       document.querySelector('.image-choose--start').classList.remove('is-active');
       document.querySelectorAll('.inactive').forEach(el => el.classList.remove('inactive'));
+      body.classList.remove('first');
       firstInput = false;
     }
 
@@ -191,20 +197,29 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // copy data
-  let modalSuccessTimeout;
   copyDataButton.addEventListener('click', (e) => {
     copyToClipboard(`[${copyData}]`);
+    
+    showSuccessModal('Data');
+  });
+  
+  let modalSuccessTimeout;
+  function showSuccessModal(type) {
+    copyTp.textContent = type;
+    
     // remove prev modal
     modalSuccess.classList.remove('is-active');
     clearTimeout(modalSuccessTimeout);
-    
+
     setTimeout(() => {
       modalSuccess.classList.add('is-active');
+
       modalSuccessTimeout = setTimeout(() => {
         modalSuccess.classList.remove('is-active');
       }, 10000);
     }, 350);
-  });
+  }
+
   function copyToClipboard(text) {
     const dummy = document.createElement("textarea");
     document.body.appendChild(dummy);
@@ -213,6 +228,120 @@ document.addEventListener('DOMContentLoaded', () => {
     document.execCommand("copy");
     document.body.removeChild(dummy);
   }
+
+  const copyCodeData = {
+    particle() {
+      return `class Particle {
+  constructor({ x, y, r, g, b, a, width, height, color }) {
+    this.x = x;
+    this.y = y;
+    this.color = color ? color : \`rgba(\${r}\${r}\${b})\`;
+    // this.color = color ? color : \`rgba(\${r}\${r}\${b}\${a})\`;
+    this.width = width;
+    this.height = height;
+  }
+
+  draw() {
+    context.beginPath();
+    context.fillStyle = this.color;
+    context.rect(this.x, this.y, this.width, this.height);
+    context.fill();
+  }
+}`
+    },
+    rgb() {
+      return `// import { imageData } from './imageData';
+
+const image = {
+  width: ${image.width},
+}
+
+function getParticles() {
+  /* multiply x and y if you want to make big image
+  with visible pixels */
+  const scale = 1;
+
+  for (let i = 0; i < data.length; i++) {
+    particles.push(new Particle({
+      x: i % (image.width) * scale,
+      y: Math.floor(i / image.width) * scale,
+      r: imageData[i][0],
+      g: imageData[i][1],
+      b: imageData[i][2],
+      /* rgba */
+      a: imageData[i][3],
+      /* rgb */
+      a: 1,
+
+      /* set width and height to scale, if you scale it */
+      width: scale,
+      height: scale,
+    }));
+  }
+}
+getParticles();`
+    },
+    xyrgb() {
+      return `// import { imageData } from './imageData';
+
+function getParticles() {
+  /* multiply x and y if you want to make big image
+  with visible pixels */
+  const scale = 1;
+  
+  for (let i = 0; i < data.length; i++) {
+    particles.push(new Particle({
+      x: imageData[i][0] * scale,
+      y: imageData[i][1] * scale,
+      r: imageData[i][2],
+      g: imageData[i][3],
+      b: imageData[i][4],
+      /* xy rgba */
+      a: imageData[i][5],
+      /* xy rgb */
+      a: 1,
+  
+      /* set width and height to scale, if you scale it*/
+      width: scale,
+      height: scale,
+    }));
+  }
+}
+getParticles();`
+    },
+    xy() {
+      return `// import { imageData } from './imageData';
+
+function getParticles() {
+  /* multiply x and y if you want to make big image
+  with visible pixels */
+  const scale = 1;
+  
+  for (let i = 0; i < data.length; i++) {
+    particles.push(new Particle({
+      x: imageData[i][0] * scale,
+      y: imageData[i][1] * scale,
+      color: 'purple',
+      /* set width and height to scale, if you scale it*/
+      width: scale,
+      height: scale,
+    }));
+  }
+}
+getParticles();`
+    }
+  }
+
+  // copy code buttons
+  copyCodeButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      const type = this.getAttribute('tp');
+
+      copyToClipboard(copyCodeData[type]());
+
+      showSuccessModal('code of ' + type + ((type === 'particle') ? '' : ' loop'));
+    }); 
+  });
 
   // thumbs hover
   const thumbs = document.querySelectorAll('.controls--input');

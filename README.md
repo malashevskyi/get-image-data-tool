@@ -114,7 +114,7 @@ When I use `context.getImageData()` FPS sags even if I want to get `1px`. More p
         /* rgb */
         a: 1,
 
-        /* set width and height to scale, if you scale it*/
+        /* set width and height to scale, if you scale it */
         width: scale,
         height: scale,
       }));

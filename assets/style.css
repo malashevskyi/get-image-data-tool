@@ -32,12 +32,17 @@ body {
   }
 }
 
+.container {
+  width: 550px;
+  margin: 0 auto;
+}
+
 .modal-success {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 90px;
+  height: 87px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,6 +50,7 @@ body {
   opacity: 0;
   z-index: 10;
   transition: opacity 0.3s linear;
+  pointer-events: none;
 }
 .modal-success::before {
   content: '';
@@ -124,7 +130,6 @@ body {
   margin: 0 auto 100px;
   box-sizing: content-box;
   border: 2px solid #ccc;
-  width: 550px;
 }
 .canvas-wrap::before {
   content: 'It is canvas, \A here will be your image, \A canvas will be set to an image width and height';
@@ -166,11 +171,14 @@ body {
 .image-choose {
   /* border: 2px dashed #ccc; */
   width: 100%;
-  height: calc(100% + 63px);
+  height: 100%;
   top: 0;
   left: 0;
   position: absolute;
   font-family: Arial;
+}
+.first .image-choose {
+  height: calc(100% + 63px);
 }
 .image-choose p {
   margin-bottom: 30px;
@@ -178,19 +186,22 @@ body {
 
 .image-data {
   text-align: left;
-  width: 550px;
-  margin: 0;
   padding-top: 40px;
   display: flex;
 }
-.controls--buttons,
+.head-buttons {
+  display: flex;
+}
+.head-buttons,
 .image-data {
   transition: opacity 0.3s ease;
 }
 
-.controls--buttons.inactive,
+.head-buttons.inactive,
 .image-data.inactive {
-  opacity: 0.1
+  opacity: 0.1;
+  z-index: -1;
+  position: relative;
 }
 .image-data--title {
   font-size: 16px;
@@ -230,7 +241,9 @@ body {
   justify-content: center;
   position: relative;
   text-transform: uppercase;
+  margin-bottom: 25px;
 }
+
 .image-data--width, .image-data--height {
   position: absolute;
   left: 0;
@@ -304,11 +317,16 @@ body {
   padding: 0 15px;
   height: 40px;
   cursor: pointer;
-  transition: background-color .25s ease, color .25s ease;
+  outline: none;
+  box-shadow: 0 0 0 0 #a7e8ff;
+  transition: background-color .25s ease, color .25s ease, box-shadow .25s ease;
 }
 .button-white {
   background-color: #fff;
   transition: background-color .2s ease, color .2s ease
+}
+.button:focus {
+  box-shadow: 0 0 0 2px #a7e8ff;
 }
 .button:disabled {
   opacity: 0.3;
@@ -324,10 +342,32 @@ label.button {
   display: none;
 }
 
+.copy-code {
+  position: relative;
+  text-align: left;
+}
+.copy-code--buttons {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+.copy-code--button {
+  margin: 3px;
+  max-width: 100%;
+  font-weight: bold;
+  background-color: #a7e8ff;
+}
+
 .image {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
+}
+.first .image {
+  margin-bottom: 0;
 }
 
 .image-choose--overlay, .image-choose--start {
@@ -582,7 +622,6 @@ code em {
 /* --------------  CONTROLS ------------------- */
 .controls {
   margin-bottom: 40px;
-  width: 550px;
   margin: 0 auto 40px;
   text-align: left;
   position: relative;
@@ -592,13 +631,9 @@ code em {
   margin-bottom: 60px;
   display: block;
 }
-.controls--buttons {
-  display: flex;
-  align-items: center;
+.first .head-buttons {
   margin-bottom: 40px;
-  justify-content: center;
 }
-
 .controls--title {
   width: 25px;
 }
@@ -738,6 +773,7 @@ input[type=range]::-moz-range-thumb {
   text-align: left;
   opacity: 0;
   transition: 0.3s ease;
+  pointer-events: none;
 }
 .error::before {
   content: '';
@@ -769,21 +805,33 @@ input[type=range]::-moz-range-thumb {
   color: green;
 }
 
-
+@media only screen and (max-width: 1000px) {
+  .head-buttons {
+    margin-bottom: 30px;
+  }
+  .copy-code {
+    display: none;
+  }
+  .title {
+    font-size: 27px;
+  }
+}
 @media only screen and (max-width: 600px) {
   .image-data--composition {
+    display: none;
+  }
+  .github {
     display: none;
   }
   .image-data--info {
     padding: 0;
   }
-  .image-data {
-    text-align: center;
-    justify-content: center;
-    padding-top: 25px;
-  }
-  .controls, .canvas-wrap {
+  .container {
     width: 435px;
+  }
+  .image-data {
+    padding: 25px 0;
+    display: block;
   }
   .canvas-wrap::before {
     font-size: 11px;
@@ -791,9 +839,22 @@ input[type=range]::-moz-range-thumb {
   .title {
     font-size: 22px;
   }
+  .modal-title {
+    font-size: 13px;
+  }
+  .modal-title + svg {
+    width: 20px;
+    height: 20px;
+  }
+  .head-buttons {
+    margin-bottom: 20px;
+  }
+  .modal-success {
+    height: 76px;
+  }
 }
 @media only screen and (max-width: 450px) {
-  .controls, .canvas-wrap {
+  .container {
     width: 300px;
   }
   .canvas-wrap::before {
@@ -809,7 +870,7 @@ input[type=range]::-moz-range-thumb {
     font-size: 8px;
     padding: 6px;
   }
-  .controls--buttons {
+  .head-buttons {
     margin-bottom: 70px;
   }
   .image-choose--start h4 {
@@ -819,5 +880,11 @@ input[type=range]::-moz-range-thumb {
 
   .error {
     width: 300px;
+  }
+  .first .head-buttons {
+    margin-bottom: 75px;
+  }
+  .modal-success {
+    height: 71px;
   }
 }
