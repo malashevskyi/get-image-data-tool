@@ -69,8 +69,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         i += 4;
       }
     }
-
-    console.log(particles.length);
   };
   function animate() {
     requestAnimationFrame(animate);

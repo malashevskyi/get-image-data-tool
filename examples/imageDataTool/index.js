@@ -62,9 +62,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
   }
   getParticles();
-
-  console.log(particles.length);
-
+  
   function animate() {
     requestAnimationFrame(animate);
     if (particles.length === 0) return;
