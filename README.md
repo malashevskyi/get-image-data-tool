@@ -17,7 +17,7 @@ I made two examples with the same image - 6312 particles:
 - [link](https://get-image-data.web.app/examples/context.getImageData/) (48 FPS on my computer) with context.getImageData
 - [link](https://get-image-data.web.app/examples/imageDataTool/) (60 FPS on my computer) without context.getImageData, it is just an image array with coordinates which I obtained with this tool.
 
-When I use `context.getImageData()` Sometimes FPS sags even if I want to get `1px`. More problem if I need to get data from several images, or I use several canvases or use routing.
+When I use `context.getImageData()` sometimes FPS sags even if I want to get `1px`. More problem if I need to get data from several images, or I use several canvases or use routing.
 
 As far as I understood it very much depends on how much RAM you have.
 
