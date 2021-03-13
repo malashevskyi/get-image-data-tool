@@ -261,15 +261,17 @@ function getParticles() {
   with visible pixels */
   const scale = 1;
 
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < imageData.length; i++) {
+    const [r, g, b, a] = imageData[i];
+    
     particles.push(new Particle({
       x: i % (image.width) * scale,
       y: Math.floor(i / image.width) * scale,
-      r: imageData[i][0],
-      g: imageData[i][1],
-      b: imageData[i][2],
+      r,
+      g,
+      b,
       /* rgba */
-      a: imageData[i][3],
+      a,
       /* rgb */
       a: 1,
 
@@ -289,19 +291,21 @@ function getParticles() {
   with visible pixels */
   const scale = 1;
   
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < imageData.length; i++) {
+    const [x, y, r, g, b, a] = imageData[i];
+
     particles.push(new Particle({
-      x: imageData[i][0] * scale,
-      y: imageData[i][1] * scale,
-      r: imageData[i][2],
-      g: imageData[i][3],
-      b: imageData[i][4],
+      x: x * scale,
+      y: y * scale,
+      r,
+      g,
+      b,
       /* xy rgba */
-      a: imageData[i][5],
+      a,
       /* xy rgb */
       a: 1,
   
-      /* set width and height to scale, if you scale it*/
+      /* set width and height to scale, if you scale it */
       width: scale,
       height: scale,
     }));
@@ -317,12 +321,14 @@ function getParticles() {
   with visible pixels */
   const scale = 1;
   
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < imageData.length; i++) {
+    const [x, y] = imageData[i];
+
     particles.push(new Particle({
-      x: imageData[i][0] * scale,
-      y: imageData[i][1] * scale,
+      x: x * scale,
+      y: y * scale,
       color: 'purple',
-      /* set width and height to scale, if you scale it*/
+      /* set width and height to scale, if you scale it */
       width: scale,
       height: scale,
     }));

@@ -69,14 +69,16 @@ When I use `context.getImageData()` FPS sags even if I want to get `1px`. More p
     let i = 0;
     for (let y = 0; y < image.height; y++) {
       for (let x = 0; x < image.width; x++) {
+        const [r, g, b, a] = data[i];
+
         particles.push(new Particle({
           x: x * scale,
           y: y * scale,
-          r: data[i][0],
-          g: data[i][1],
-          b: data[i][2],
+          r,
+          g,
+          b,
           /* rgba */
-          a: data[i][3],
+          a,
           /* rgb */
           a: 1,
 
@@ -103,14 +105,16 @@ When I use `context.getImageData()` FPS sags even if I want to get `1px`. More p
     const scale = 1;
 
     for (let i = 0; i < data.length; i++) {
+      const [r, g, b, a] = data[i];
+
       particles.push(new Particle({
         x: i % (image.width) * scale,
         y: Math.floor(i / image.width) * scale,
-        r: data[i][0],
-        g: data[i][1],
-        b: data[i][2],
+        r,
+        g,
+        b,
         /* rgba */
-        a: data[i][3],
+        a,
         /* rgb */
         a: 1,
 
@@ -129,14 +133,16 @@ When I use `context.getImageData()` FPS sags even if I want to get `1px`. More p
     const scale = 1;
 
     for (let i = 0; i < data.length; i++) {
+      const [x, y, r, g, b, a] = data[i];
+
       particles.push(new Particle({
-        x: data[i][0] * scale,
-        y: data[i][1] * scale,
-        r: data[i][2],
-        g: data[i][3],
-        b: data[i][4],
+        x: x * scale,
+        y: y * scale,
+        r,
+        g,
+        b,
         /* xy rgba */
-        a: data[i][5],
+        a,
         /* xy rgb */
         a: 1,
 
@@ -155,9 +161,11 @@ When I use `context.getImageData()` FPS sags even if I want to get `1px`. More p
     const scale = 1;
 
     for (let i = 0; i < data.length; i++) {
+      const [x, y] = data[i];
+
       particles.push(new Particle({
-        x: data[i][0] * scale,
-        y: data[i][1] * scale,
+        x: x * scale,
+        y: y * scale,
         color: 'purple',
         /* set width and height to scale, if you scale it*/
         width: scale,
