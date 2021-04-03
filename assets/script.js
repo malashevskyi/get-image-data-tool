@@ -104,12 +104,16 @@ document.addEventListener('DOMContentLoaded', () => {
   fileInput1.addEventListener('change', fileInputChnageHandler);
   fileInput2.addEventListener('change', fileInputChnageHandler);
   
+  function removeHeaderOverlayOnFirstInput() {
+    document.querySelector('.image-choose--start').classList.remove('is-active');
+    document.querySelectorAll('.inactive').forEach(el => el.classList.remove('inactive'));
+    body.classList.remove('first');
+    firstInput = false;
+  }
+  
   function fileInputChnageHandler() {
     if (firstInput) {
-      document.querySelector('.image-choose--start').classList.remove('is-active');
-      document.querySelectorAll('.inactive').forEach(el => el.classList.remove('inactive'));
-      body.classList.remove('first');
-      firstInput = false;
+      removeHeaderOverlayOnFirstInput();
     }
 
     if (this.files && this.files[0]) {
@@ -122,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
+  
 
   // drop file handler
   imageChoose.addEventListener('drop', (event) => {
@@ -129,8 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     event.stopPropagation();
 
     if (firstInput) {
-      document.querySelector('.image-choose--start').classList.remove('is-active');
-      firstInput = false;
+      removeHeaderOverlayOnFirstInput();
     }
     
     const file = event.dataTransfer.files[0];
