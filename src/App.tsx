@@ -1,5 +1,12 @@
+import { Box } from '@chakra-ui/react'
+import Title from './components/Title'
+
 function App() {
-  return <div className="App">App</div>
+  return (
+    <Box>
+      <Title />
+    </Box>
+  )
 }
 
 export default App
