@@ -1,10 +1,12 @@
-import { Heading } from '@chakra-ui/react'
+import { Box, Heading } from '@chakra-ui/react'
+import Fork from '../Fork'
 
 function Title() {
   return (
-    <Heading mt={4} textAlign="center">
-      Get image data for canvas
-    </Heading>
+    <Box as="header" pt={4}>
+      <Heading textAlign="center">Get image data for canvas</Heading>
+      <Fork />
+    </Box>
   )
 }
 
