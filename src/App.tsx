@@ -1,16 +1,15 @@
 import { Box } from '@chakra-ui/react'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import Drop from './components/Drop'
 import Title from './components/Title'
-import { GlobalContext } from './context/globalContext'
+import { RootState } from './store'
 
 function App() {
   const canvasChoose = useRef<HTMLCanvasElement>(null)
-  const { state } = useContext(GlobalContext)
-  const [canvasGradient, setCanvasGradient] = useState<CanvasGradient | null>(
-    null
-  )
-  const offsetTick = useRef<number>(0)
+  const state = useSelector((state: RootState) => state.root)
+  let offsetTick = 0
+  let canvasGradient: CanvasGradient | null = null
   const RAF = useRef<number | null>(null)
 
   useEffect(() => {
@@ -21,7 +20,7 @@ function App() {
         cancelAnimationFrame(RAF.current)
       }
     }
-  }, [state])
+  }, [state.canvasChooseSize])
 
   function animate() {
     RAF.current = requestAnimationFrame(animate)
@@ -51,14 +50,14 @@ function App() {
       grd.addColorStop(0.9, `hsl(270, 50%, 50%)`)
       grd.addColorStop(1, `hsl(300, 50%, 50%)`)
 
-      setCanvasGradient(grd)
+      canvasGradient = grd
     }
 
     canvasChoose.current.setAttribute('width', width + 'px')
     canvasChoose.current.setAttribute('height', height + 'px')
 
-    if (offsetTick.current >= 28) offsetTick.current = 0
-    offsetTick.current += 0.5
+    if (offsetTick >= 28) offsetTick = 0
+    offsetTick += 0.5
 
     context.beginPath()
     context.rect(0, 0, width, height)
@@ -67,7 +66,7 @@ function App() {
       context.strokeStyle = canvasGradient
     }
     context.setLineDash([7, 7])
-    context.lineDashOffset = offsetTick.current
+    context.lineDashOffset = offsetTick
 
     context.stroke()
     context.closePath()
@@ -76,7 +75,6 @@ function App() {
   return (
     <Box pos="relative" overflow="hidden" w="100vw">
       <Title />
-
       <Drop ref={canvasChoose} />
     </Box>
   )
