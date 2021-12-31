@@ -1,32 +1,52 @@
-import { Box, Button, Center, Input } from '@chakra-ui/react'
-import { useContext, useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { mainActions } from '../../store'
+import { Box, Center, VStack } from '@chakra-ui/react'
+// import { useContext, useRef } from 'react'
+// import { useDispatch } from 'react-redux'
+// import { mainActions } from '../../store'
+import ChooseImage from '../ChooseImage'
 
 const FirstImageChooseOverlay = () => {
-  const chooseFileRef = useRef<HTMLInputElement>(null)
-  const dispatch = useDispatch()
+  // const chooseFileRef = useRef<HTMLInputElement>(null)
+  // const dispatch = useDispatch()
 
-  const onChooseFileHandler = () => {
-    chooseFileRef.current?.click()
-  }
+  // const onChooseFileHandler = () => {
+  //   chooseFileRef.current?.click()
+  // }
 
-  const fileInputChnageHandler = () => {
-    if (chooseFileRef.current?.files) {
-      const { 0: file } = chooseFileRef.current.files
+  // const fileInputChnageHandler = () => {
+  //   if (chooseFileRef.current?.files) {
+  //     const { 0: file } = chooseFileRef.current.files
 
-      dispatch(mainActions.newImageUrl(URL.createObjectURL(file)))
-    }
-  }
+  //     const blobUrl = URL.createObjectURL(file)
+
+  //     const image = new Image()
+  //     image.src = blobUrl
+
+  //     image.onload = () => {
+  //       dispatch(mainActions.newImageUrl(blobUrl))
+  //       dispatch(
+  //         mainActions.newImageSize({ width: image.width, height: image.height })
+  //       )
+  //       dispatch(mainActions.newImage(image))
+  //     }
+  //   }
+  // }
 
   return (
-    <>
+    <VStack
+      justifyContent="center"
+      pos="absolute"
+      top={0}
+      left={0}
+      w="100%"
+      h="100%"
+    >
       {/* overlay */}
       <Box
         bg="gray.900"
         pos="absolute"
         left="4px"
         top="4px"
+        zIndex={3}
         opacity={0.5}
         w="calc(100% - 8px)"
         h="calc(100% - 8px)"
@@ -38,7 +58,7 @@ const FirstImageChooseOverlay = () => {
         color="white"
         d="inline-block"
         mb={2}
-        zIndex={1}
+        zIndex={4}
         textTransform="uppercase"
         pos="relative"
         _before={{
@@ -54,17 +74,23 @@ const FirstImageChooseOverlay = () => {
           Drag and drop a file here or
         </Box>
       </Center>
-      <Input
+      <ChooseImage btnName="Choose file" />
+      {/* <Input
         type="file"
         onChange={fileInputChnageHandler}
         visibility="hidden"
         pos="absolute"
         ref={chooseFileRef}
       ></Input>
-      <Button colorScheme="blue" onClick={onChooseFileHandler}>
+      <Button
+        colorScheme="blue"
+        pos="relative"
+        zIndex={4}
+        onClick={onChooseFileHandler}
+      >
         Choose file
-      </Button>
-    </>
+      </Button> */}
+    </VStack>
   )
 }
 

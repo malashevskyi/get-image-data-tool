@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react'
 import { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import Drop from './components/Drop'
+import ImageCanvas from './components/ImageCanvas'
 import Title from './components/Title'
 import { RootState } from './store'
 
@@ -73,9 +74,11 @@ function App() {
   }
 
   return (
-    <Box pos="relative" overflow="hidden" w="100vw">
+    <Box pos="relative" overflow="hidden" w="calc(100% - 4px)" ml="2px">
       <Title />
       <Drop ref={canvasChoose} />
+
+      <ImageCanvas />
     </Box>
   )
 }

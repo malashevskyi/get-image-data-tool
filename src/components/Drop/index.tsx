@@ -1,8 +1,11 @@
-import { Box, Center } from '@chakra-ui/react'
+import { Box, Center, Flex, HStack, VStack } from '@chakra-ui/react'
 import { forwardRef, RefObject, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { mainActions, RootState } from '../../store'
+import ChooseImage from '../ChooseImage'
+import CopyImageData from '../CopyImageData'
 import FirstImageChooseOverlay from '../FirstImageChooseOverlay'
+import ImageInfo from '../ImageInfo'
 import DropActive from './DropActive'
 
 const Drop = forwardRef((_, ref) => {
@@ -12,7 +15,7 @@ const Drop = forwardRef((_, ref) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('STATE', state.imageUrl, state.canvasChooseSize)
+    // console.log('STATE', state.imageUrl, state.canvasChooseSize)
   }, [state])
 
   // choose image canvas animation
@@ -37,6 +40,12 @@ const Drop = forwardRef((_, ref) => {
   // choose image handler
   useEffect(() => {
     if (!state.imageUrl) return
+
+    // dispatch(
+    //   mainActions.setParticlesCount(
+    //     state.canvasChooseSize.width * state.canvasChooseSize.height
+    //   )
+    // )
 
     // remove active drag/drop overlay
     removeOverlay()
@@ -64,7 +73,18 @@ const Drop = forwardRef((_, ref) => {
     if (!files) return
     const { 0: file } = files
 
-    dispatch(mainActions.newImageUrl(URL.createObjectURL(file)))
+    const blobUrl = URL.createObjectURL(file)
+
+    const image = new Image()
+    image.src = blobUrl
+
+    image.onload = () => {
+      dispatch(mainActions.newImageUrl(blobUrl))
+      dispatch(
+        mainActions.newImageSize({ width: image.width, height: image.height })
+      )
+      dispatch(mainActions.newImage(image))
+    }
   }
 
   function preventDocumentImageDrop(event: DragEvent | MouseEvent) {
@@ -139,6 +159,15 @@ const Drop = forwardRef((_, ref) => {
 
         {/* show overlay drop/choose until first image choose or drop */}
         {!state.imageUrl && <FirstImageChooseOverlay />}
+
+        {/* loaded image info */}
+        <VStack opacity={state.imageUrl ? 1 : 0.1}>
+          <ImageInfo />
+          <HStack spacing={2}>
+            <ChooseImage btnName="Choose new file" />
+            <CopyImageData />
+          </HStack>
+        </VStack>
 
         {/* overlay while drag/drop */}
         <DropActive visible={isDropActive} />
