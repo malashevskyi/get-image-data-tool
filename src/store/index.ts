@@ -15,6 +15,9 @@ type StateType = {
   imageDataUpdated: boolean
   imageDataSize: string
   particlesCount: number
+  particles: any[]
+  copyDataType: string
+  copyData: string
 }
 
 const initialState: StateType = {
@@ -29,15 +32,32 @@ const initialState: StateType = {
   imageDataUpdated: false,
   imageDataSize: '0KB',
   particlesCount: 0,
+  particles: [],
+  copyDataType: 'xyrgb',
+  copyData: '',
 }
 
 const mainSlice = createSlice({
   name: 'main',
   initialState,
   reducers: {
+    reset(state) {
+      state.canvasChooseSize.width = null
+      state.canvasChooseSize.height = null
+      state.imageUrl = null
+      state.image = null
+      state.imageSize.width = null
+      state.imageSize.height = null
+      state.imageData = []
+      state.imageDataUpdated = false
+      state.imageDataSize = '0KB'
+      state.particlesCount = 0
+      state.particles = []
+      state.copyDataType = 'xyrgb'
+      state.copyData = ''
+    },
     newImageUrl(state, action) {
       state.imageUrl = action.payload
-      // state.imageDataUpdated = false
     },
     setCanvasGradientSize(state, action) {
       state.canvasChooseSize.width = action.payload.width
@@ -63,6 +83,16 @@ const mainSlice = createSlice({
     },
     setParticlesCount(state, action) {
       state.particlesCount = action.payload
+    },
+    setParticles(state, action) {
+      state.particles = action.payload
+      state.particlesCount = action.payload.length
+    },
+    changeCopyDataType(state, action) {
+      state.copyDataType = action.payload
+    },
+    addToCopyData(state, action) {
+      state.copyData = action.payload
     },
   },
 })

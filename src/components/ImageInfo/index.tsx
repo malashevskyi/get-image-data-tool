@@ -31,6 +31,9 @@ const ImageInfo = forwardRef((_, ref) => {
         <ListItem>
           image height : <Badge>{state.imageSize.height}</Badge>
         </ListItem>
+        <ListItem>
+          particles count : <Badge>{state.particlesCount}</Badge>
+        </ListItem>
       </List>
     </Box>
   )

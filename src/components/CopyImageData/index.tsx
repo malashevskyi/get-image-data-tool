@@ -1,34 +1,39 @@
-import { Box, Button, Center, Input } from '@chakra-ui/react'
-import { useContext, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { mainActions, RootState } from '../../store'
+import { Box, Button, Textarea } from '@chakra-ui/react'
+import { useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
 
 const CopyImageData = () => {
-  const chooseFileRef = useRef<HTMLInputElement>(null)
   const state = useSelector((state: RootState) => state.root)
-  const dispatch = useDispatch()
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
   const copyToClipboard = (text: string) => {
-    const dummy = document.createElement('textarea')
-    document.body.appendChild(dummy)
-    dummy.value = text
-    dummy.select()
+    if (!textAreaRef.current) return
+
+    textAreaRef.current.value = state.copyData
+
+    textAreaRef.current.select()
     document.execCommand('copy')
-    document.body.removeChild(dummy)
   }
 
   const onClickHandler = () => {
-    if (!state.imageData) return
+    if (!state.copyData) return
 
     copyToClipboard(`[${state.imageData}]`)
   }
 
   return (
-    <>
+    <Box>
+      <Textarea
+        pos="absolute"
+        left="-10000px"
+        top="-10000px"
+        ref={textAreaRef}
+      />
       <Button colorScheme="blue" onClick={onClickHandler}>
         Copy image data
       </Button>
-    </>
+    </Box>
   )
 }
 

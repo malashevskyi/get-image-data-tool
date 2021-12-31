@@ -21,6 +21,7 @@ const ChooseImage = ({ btnName }: { btnName: string }) => {
       image.src = blobUrl
 
       image.onload = () => {
+        dispatch(mainActions.reset())
         dispatch(mainActions.newImageUrl(blobUrl))
         dispatch(
           mainActions.newImageSize({ width: image.width, height: image.height })

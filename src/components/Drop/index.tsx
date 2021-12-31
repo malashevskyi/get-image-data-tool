@@ -79,6 +79,7 @@ const Drop = forwardRef((_, ref) => {
     image.src = blobUrl
 
     image.onload = () => {
+      dispatch(mainActions.reset())
       dispatch(mainActions.newImageUrl(blobUrl))
       dispatch(
         mainActions.newImageSize({ width: image.width, height: image.height })
