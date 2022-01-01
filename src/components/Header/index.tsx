@@ -1,7 +1,7 @@
 import { Box, Heading } from '@chakra-ui/react'
 import Fork from '../Fork'
 
-function Title() {
+function Header() {
   return (
     <Box as="header" pt={4} zIndex={5} pos="relative">
       <Heading textAlign="center">Get image data for canvas</Heading>
@@ -10,4 +10,4 @@ function Title() {
   )
 }
 
-export default Title
+export default Header
