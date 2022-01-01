@@ -90,14 +90,7 @@ const mainSlice = createSlice({
     },
     setImageData(state, action) {
       state.imageDataUpdated = true
-      // console.log('here start, action', state.imageDataUpdated, action.payload)
       state.imageData = action.payload
-
-      let size = action.payload.length / 1024
-      if (size) {
-        size += 4
-        state.imageDataSize = Math.round(size) + ' KB'
-      }
     },
     setParticlesCount(state, action) {
       state.particlesCount = action.payload
@@ -112,6 +105,12 @@ const mainSlice = createSlice({
     },
     addToCopyData(state, action) {
       state.copyData = action.payload
+
+      let size = action.payload.length / 1024
+      if (size) {
+        size += 4
+        state.imageDataSize = Math.round(size) + ' KB'
+      }
     },
   },
 })
