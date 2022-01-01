@@ -18,6 +18,7 @@ type StateType = {
   particles: any[]
   copyDataType: string
   copyData: string
+  controlTypes: string[]
 }
 
 const initialState: StateType = {
@@ -35,6 +36,7 @@ const initialState: StateType = {
   particles: [],
   copyDataType: 'xyrgb',
   copyData: '',
+  controlTypes: ['rgb', 'rgba', 'xyrgb', 'xyrgba', 'xy'],
 }
 
 const mainSlice = createSlice({

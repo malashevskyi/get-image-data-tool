@@ -148,7 +148,7 @@ const Drop = forwardRef((_, ref) => {
   )
 
   return (
-    <Box as="section">
+    <Box as="section" mb={7}>
       <Center
         flexDirection="column"
         h="300px"

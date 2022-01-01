@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import Drop from './components/Drop'
 import ImageCanvas from './components/ImageCanvas'
 import Title from './components/Title'
+import Types from './components/Types'
 import { RootState } from './store'
 
 function App() {
@@ -77,7 +78,7 @@ function App() {
     <Box pos="relative" overflow="hidden" w="calc(100% - 4px)" ml="2px">
       <Title />
       <Drop ref={canvasChoose} />
-
+      <Types />
       <ImageCanvas />
     </Box>
   )
