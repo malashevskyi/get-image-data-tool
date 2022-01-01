@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
+import CopyParticleCode from './components/CopyParticleCode'
 import DataControls from './components/DataControls'
 import Drop from './components/Drop'
 import ImageCanvas from './components/ImageCanvas'
@@ -83,6 +84,7 @@ function App() {
       <Title />
       <Drop ref={canvasChoose} />
       <Types />
+      <CopyParticleCode />
       <DataControls />
       <ImageCanvas />
     </Box>
