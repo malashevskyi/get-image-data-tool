@@ -1,5 +1,5 @@
-import { Box, Center, Flex } from '@chakra-ui/react'
-import { forwardRef, RefObject, useEffect, useRef, useState } from 'react'
+import { Center } from '@chakra-ui/react'
+import { RefObject, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { mainActions, RootState } from '../../store'
 
@@ -55,16 +55,9 @@ const ImageCanvas = () => {
   const dispatch = useDispatch()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const RAF = useRef<number | null>(null)
-  const rgbaControls = { r: [0, 255], g: [0, 255], b: [0, 255], a: [0, 1] }
   let copyData = ''
 
-  // useEffect(() => {
-  //   console.log('state', state)
-  //   const { width, height } = state.imageSize
-  // }, [state])
-
   useEffect(() => {
-    // console.log('____________', state.image)
     animate()
     return () => {
       if (RAF.current) {
@@ -81,7 +74,6 @@ const ImageCanvas = () => {
     b: number,
     a: number
   ) {
-    // console.log('copydatatype', state.copyDataType)
     let d
     switch (state.copyDataType) {
       case 'rgb':
@@ -100,8 +92,6 @@ const ImageCanvas = () => {
         d = `[${x},${y}]`
         break
     }
-    // dispatch(mainActions.addToCopyData(d))
-    // console.log('copyData', copyData)
     if (copyData.length !== 0) {
       copyData += `,${d}`
     } else {
@@ -118,8 +108,6 @@ const ImageCanvas = () => {
       '2d'
     ) as CanvasRenderingContext2D
     const { width, height } = context.canvas
-
-    // if (!width || !height) return
 
     context.clearRect(0, 0, width, height)
 
@@ -144,7 +132,6 @@ const ImageCanvas = () => {
         if (i === 0) {
           copyData = ''
         }
-        // console.log(i, imageData.length)
 
         switch (state.copyDataType) {
           case 'rgb':
@@ -215,10 +202,6 @@ const ImageCanvas = () => {
       dispatch(mainActions.setParticles(particles))
     }
 
-    if (state.particles.length === 0) {
-      // clear copy data
-      // displayImageData();
-    }
     state.particles.forEach((particle) => {
       particle.draw()
     })

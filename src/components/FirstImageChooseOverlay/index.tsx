@@ -1,36 +1,7 @@
 import { Box, Center, VStack } from '@chakra-ui/react'
-// import { useContext, useRef } from 'react'
-// import { useDispatch } from 'react-redux'
-// import { mainActions } from '../../store'
 import ChooseImage from '../ChooseImage'
 
 const FirstImageChooseOverlay = () => {
-  // const chooseFileRef = useRef<HTMLInputElement>(null)
-  // const dispatch = useDispatch()
-
-  // const onChooseFileHandler = () => {
-  //   chooseFileRef.current?.click()
-  // }
-
-  // const fileInputChnageHandler = () => {
-  //   if (chooseFileRef.current?.files) {
-  //     const { 0: file } = chooseFileRef.current.files
-
-  //     const blobUrl = URL.createObjectURL(file)
-
-  //     const image = new Image()
-  //     image.src = blobUrl
-
-  //     image.onload = () => {
-  //       dispatch(mainActions.newImageUrl(blobUrl))
-  //       dispatch(
-  //         mainActions.newImageSize({ width: image.width, height: image.height })
-  //       )
-  //       dispatch(mainActions.newImage(image))
-  //     }
-  //   }
-  // }
-
   return (
     <VStack
       justifyContent="center"
@@ -75,21 +46,6 @@ const FirstImageChooseOverlay = () => {
         </Box>
       </Center>
       <ChooseImage btnName="Choose file" />
-      {/* <Input
-        type="file"
-        onChange={fileInputChnageHandler}
-        visibility="hidden"
-        pos="absolute"
-        ref={chooseFileRef}
-      ></Input>
-      <Button
-        colorScheme="blue"
-        pos="relative"
-        zIndex={4}
-        onClick={onChooseFileHandler}
-      >
-        Choose file
-      </Button> */}
     </VStack>
   )
 }

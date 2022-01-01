@@ -1,5 +1,5 @@
-import { Box, Button, Center, Input } from '@chakra-ui/react'
-import { useContext, useRef } from 'react'
+import { Box, Button, Input } from '@chakra-ui/react'
+import { useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { mainActions } from '../../store'
 
@@ -11,7 +11,7 @@ const ChooseImage = ({ btnName }: { btnName: string }) => {
     chooseFileRef.current?.click()
   }
 
-  const fileInputChnageHandler = () => {
+  const fileInputChangeHandler = () => {
     if (chooseFileRef.current?.files) {
       const { 0: file } = chooseFileRef.current.files
 
@@ -35,13 +35,13 @@ const ChooseImage = ({ btnName }: { btnName: string }) => {
     <Box pos="relative" zIndex={4}>
       <Input
         type="file"
-        onChange={fileInputChnageHandler}
+        onChange={fileInputChangeHandler}
         visibility="hidden"
         pos="absolute"
         ref={chooseFileRef}
       ></Input>
       <Button colorScheme="blue" onClick={onChooseFileHandler}>
-        Choose new file
+        {btnName}
       </Button>
     </Box>
   )

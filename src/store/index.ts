@@ -67,7 +67,6 @@ const mainSlice = createSlice({
       state.imageDataSize = '0KB'
       state.particlesCount = 0
       state.particles = []
-      // state.copyDataType = 'xyrgb'
       state.copyData = ''
     },
     setChannel(state, action) {

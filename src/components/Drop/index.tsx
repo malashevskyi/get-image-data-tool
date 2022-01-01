@@ -1,4 +1,4 @@
-import { Box, Center, Flex, HStack, VStack } from '@chakra-ui/react'
+import { Box, Center, HStack, VStack } from '@chakra-ui/react'
 import { forwardRef, RefObject, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { mainActions, RootState } from '../../store'
@@ -13,10 +13,6 @@ const Drop = forwardRef((_, ref) => {
   const [isDropActive, setIsDropActive] = useState<boolean>(false)
   const state = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    // console.log('STATE', state.imageUrl, state.canvasChooseSize)
-  }, [state])
 
   // choose image canvas animation
   useEffect(() => {
@@ -40,12 +36,6 @@ const Drop = forwardRef((_, ref) => {
   // choose image handler
   useEffect(() => {
     if (!state.imageUrl) return
-
-    // dispatch(
-    //   mainActions.setParticlesCount(
-    //     state.canvasChooseSize.width * state.canvasChooseSize.height
-    //   )
-    // )
 
     // remove active drag/drop overlay
     removeOverlay()

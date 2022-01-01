@@ -1,29 +1,14 @@
 import {
-  Badge,
   Box,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react'
-import { useDispatch, useSelector } from 'react-redux'
-import { mainActions, RootState } from '../../store'
-import {
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-} from '@chakra-ui/react'
-import {
   RangeSlider,
-  RangeSliderTrack,
   RangeSliderFilledTrack,
   RangeSliderThumb,
+  RangeSliderTrack,
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
+import { mainActions, RootState } from '../../store'
 
 const DataControls = () => {
   const state = useSelector((state: RootState) => state.root)
@@ -32,47 +17,26 @@ const DataControls = () => {
   const [gValue, setGValue] = useState<number[]>([0, 255])
   const [bValue, setBValue] = useState<number[]>([0, 255])
   const [aValue, setAValue] = useState<number[]>([0, 1])
-  const debounced = useDebouncedCallback(
-    // function
-    (value) => {
-      // setValue(value);
-      dispatch(mainActions.setChannel(value))
-    },
-    // delay in ms
-    100
-  )
+  const debounced = useDebouncedCallback((value) => {
+    dispatch(mainActions.setChannel(value))
+  }, 100)
 
   const onChangeRHandler = (value: number[]) => {
     setRValue(value)
-    // dispatch(mainActions.setChannel({ key: 'r', value }))
     debounced({ key: 'r', value })
   }
-  // const onChangeEndRHandler = (value: number[]) => {
-  //   dispatch(mainActions.setChannel({ key: 'r', value }))
-  // }
   const onChangeGHandler = (value: number[]) => {
     setGValue(value)
     debounced({ key: 'g', value })
   }
-  // const onChangeEndGHandler = (value: number[]) => {
-  //   dispatch(mainActions.setChannel({ key: 'g', value }))
-  // }
   const onChangeBHandler = (value: number[]) => {
     setBValue(value)
-    // dispatch(mainActions.setChannel({ key: 'b', value }))
     debounced({ key: 'b', value })
   }
-  // const onChangeEndBHandler = (value: number[]) => {
-  //   dispatch(mainActions.setChannel({ key: 'b', value }))
-  // }
   const onChangeAHandler = (value: number[]) => {
     setAValue(value)
-    // dispatch(mainActions.setChannel({ key: 'a', value }))
     debounced({ key: 'a', value })
   }
-  // const onChangeEndAHandler = (value: number[]) => {
-  //   dispatch(mainActions.setChannel({ key: 'a', value }))
-  // }
 
   return (
     <Box
@@ -97,7 +61,6 @@ const DataControls = () => {
         )}
       <Box opacity={state.imageUrl ? 1 : 0.4}>
         <RangeSlider
-          // onChangeEnd={onChangeEndRHandler}
           onChange={onChangeRHandler}
           defaultValue={[0, 255]}
           min={0}
@@ -118,7 +81,6 @@ const DataControls = () => {
           </RangeSliderThumb>
         </RangeSlider>
         <RangeSlider
-          // onChangeEnd={onChangeEndGHandler}
           onChange={onChangeGHandler}
           defaultValue={[0, 255]}
           min={0}
@@ -139,7 +101,6 @@ const DataControls = () => {
           </RangeSliderThumb>
         </RangeSlider>
         <RangeSlider
-          // onChangeEnd={onChangeEndBHandler}
           onChange={onChangeBHandler}
           defaultValue={[0, 255]}
           min={0}
@@ -160,7 +121,6 @@ const DataControls = () => {
           </RangeSliderThumb>
         </RangeSlider>
         <RangeSlider
-          // onChangeEnd={onChangeEndAHandler}
           onChange={onChangeAHandler}
           defaultValue={[0, 1]}
           min={0}
