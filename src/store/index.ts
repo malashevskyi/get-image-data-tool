@@ -19,6 +19,12 @@ type StateType = {
   copyDataType: string
   copyData: string
   controlTypes: string[]
+  channels: {
+    r: number[]
+    g: number[]
+    b: number[]
+    a: number[]
+  }
 }
 
 const initialState: StateType = {
@@ -37,6 +43,12 @@ const initialState: StateType = {
   copyDataType: 'xyrgb',
   copyData: '',
   controlTypes: ['rgb', 'rgba', 'xyrgb', 'xyrgba', 'xy'],
+  channels: {
+    r: [0, 255],
+    g: [0, 255],
+    b: [0, 255],
+    a: [0, 1],
+  },
 }
 
 const mainSlice = createSlice({
@@ -55,8 +67,13 @@ const mainSlice = createSlice({
       state.imageDataSize = '0KB'
       state.particlesCount = 0
       state.particles = []
-      state.copyDataType = 'xyrgb'
+      // state.copyDataType = 'xyrgb'
       state.copyData = ''
+    },
+    setChannel(state, action) {
+      const key = action.payload.key as 'r' | 'g' | 'b' | 'a'
+      state.channels[key] = action.payload.value
+      state.imageDataUpdated = false
     },
     newImageUrl(state, action) {
       state.imageUrl = action.payload
@@ -92,6 +109,7 @@ const mainSlice = createSlice({
     },
     changeCopyDataType(state, action) {
       state.copyDataType = action.payload
+      state.imageDataUpdated = false
     },
     addToCopyData(state, action) {
       state.copyData = action.payload

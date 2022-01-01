@@ -20,7 +20,7 @@ const Types = () => {
   }
 
   return (
-    <Box as="section" maxW="500px" fontSize="15px" mx="auto">
+    <Box as="section" maxW="500px" fontSize="15px" mx="auto" mb={7}>
       <Tabs onChange={onChangeTabsHandler} defaultIndex={2}>
         <TabList alignItems="center">
           <Tab>R G B</Tab>

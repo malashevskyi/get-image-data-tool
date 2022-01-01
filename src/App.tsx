@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
+import DataControls from './components/DataControls'
 import Drop from './components/Drop'
 import ImageCanvas from './components/ImageCanvas'
 import Title from './components/Title'
@@ -79,6 +80,7 @@ function App() {
       <Title />
       <Drop ref={canvasChoose} />
       <Types />
+      <DataControls />
       <ImageCanvas />
     </Box>
   )

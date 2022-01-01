@@ -71,7 +71,7 @@ const ImageCanvas = () => {
         cancelAnimationFrame(RAF.current)
       }
     }
-  }, [state.image, state.imageDataUpdated])
+  }, [state.image, state.imageDataUpdated, state.channels, state.copyDataType])
 
   function addStrToCopyData(
     x: number,
@@ -144,31 +144,29 @@ const ImageCanvas = () => {
         if (i === 0) {
           copyData = ''
         }
-        addStrToCopyData(x, y, r, g, b, a)
         // console.log(i, imageData.length)
-        if (i === imageData.length - 4) {
-          // console.log('dispatch')
-          dispatch(mainActions.addToCopyData(copyData))
-        }
 
         switch (state.copyDataType) {
           case 'rgb':
             particles.push(new Particle({ context, x, y, r, g, b }))
+            addStrToCopyData(x, y, r, g, b, a)
             break
           case 'rgba':
             particles.push(new Particle({ context, x, y, r, g, b, a }))
+            addStrToCopyData(x, y, r, g, b, a)
             break
           case 'xyrgb':
             if (a < 1) break
 
             if (
-              r >= rgbaControls.r[0] &&
-              r <= rgbaControls.r[1] &&
-              g >= rgbaControls.g[0] &&
-              g <= rgbaControls.g[1] &&
-              b >= rgbaControls.b[0] &&
-              b <= rgbaControls.b[1]
+              r >= state.channels.r[0] &&
+              r <= state.channels.r[1] &&
+              g >= state.channels.g[0] &&
+              g <= state.channels.g[1] &&
+              b >= state.channels.b[0] &&
+              b <= state.channels.b[1]
             ) {
+              addStrToCopyData(x, y, r, g, b, a)
               particles.push(new Particle({ context, x, y, r, g, b }))
             }
             break
@@ -176,30 +174,32 @@ const ImageCanvas = () => {
             if (a === 0) break
 
             if (
-              r >= rgbaControls.r[0] &&
-              r <= rgbaControls.r[1] &&
-              g >= rgbaControls.g[0] &&
-              g <= rgbaControls.g[1] &&
-              b >= rgbaControls.b[0] &&
-              b <= rgbaControls.b[1] &&
-              a >= rgbaControls.a[0] &&
-              a <= rgbaControls.a[1]
+              r >= state.channels.r[0] &&
+              r <= state.channels.r[1] &&
+              g >= state.channels.g[0] &&
+              g <= state.channels.g[1] &&
+              b >= state.channels.b[0] &&
+              b <= state.channels.b[1] &&
+              a >= state.channels.a[0] &&
+              a <= state.channels.a[1]
             ) {
               particles.push(new Particle({ context, x, y, r, g, b, a }))
+              addStrToCopyData(x, y, r, g, b, a)
             }
             break
           case 'xy':
             if (a === 0) break
             if (
-              r >= rgbaControls.r[0] &&
-              r <= rgbaControls.r[1] &&
-              g >= rgbaControls.g[0] &&
-              g <= rgbaControls.g[1] &&
-              b >= rgbaControls.b[0] &&
-              b <= rgbaControls.b[1] &&
-              a >= rgbaControls.a[0] &&
-              a <= rgbaControls.a[1]
+              r >= state.channels.r[0] &&
+              r <= state.channels.r[1] &&
+              g >= state.channels.g[0] &&
+              g <= state.channels.g[1] &&
+              b >= state.channels.b[0] &&
+              b <= state.channels.b[1] &&
+              a >= state.channels.a[0] &&
+              a <= state.channels.a[1]
             ) {
+              addStrToCopyData(x, y, r, g, b, a)
               particles.push(new Particle({ context, x, y, r, g, b, a }))
             }
             break
@@ -207,7 +207,9 @@ const ImageCanvas = () => {
             break
         }
 
-        // copyDataButton.disabled = false
+        if (i === imageData.length - 4) {
+          dispatch(mainActions.addToCopyData(copyData))
+        }
       }
 
       dispatch(mainActions.setParticles(particles))
