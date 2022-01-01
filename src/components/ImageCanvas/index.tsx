@@ -208,7 +208,7 @@ const ImageCanvas = () => {
   }
 
   return (
-    <Center as="section" pos="relative" overflow="hidden">
+    <Center as="section" pos="relative" overflow="hidden" mb={7}>
       {state.imageSize.height && state.imageSize.width && (
         <canvas
           width={state.imageSize.width || '300px'}
