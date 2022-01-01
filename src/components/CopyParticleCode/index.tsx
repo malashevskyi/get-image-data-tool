@@ -147,7 +147,7 @@ const CopyParticleCode = () => {
     <VStack
       alignItems="flex-start"
       pos="absolute"
-      top="400px"
+      top="490px"
       zIndex={4}
       display={['none', 'none', 'none', 'flex']}
     >
