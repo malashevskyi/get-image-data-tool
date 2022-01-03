@@ -1,5 +1,5 @@
 import { Center } from '@chakra-ui/react'
-import { RefObject, useEffect, useRef } from 'react'
+import { RefObject, useCallback, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { mainActions, RootState } from '../../store'
 
@@ -55,51 +55,38 @@ const ImageCanvas = () => {
   const dispatch = useDispatch()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const RAF = useRef<number | null>(null)
-  let copyData = ''
+  const copyDataRef = useRef<string | null>(null)
 
-  useEffect(() => {
-    animate()
-    return () => {
-      if (RAF.current) {
-        cancelAnimationFrame(RAF.current)
+  const addStrToCopyData = useCallback(
+    (x: number, y: number, r: number, g: number, b: number, a: number) => {
+      let d = ''
+      switch (state.copyDataType) {
+        case 'rgb':
+          d = `[${r},${g},${b}]`
+          break
+        case 'rgba':
+          d = `[${r},${g},${b},${a}]`
+          break
+        case 'xyrgb':
+          d = `[${x},${y},${r},${g},${b}]`
+          break
+        case 'xyrgba':
+          d = `[${x},${y},${r},${g},${b},${a}]`
+          break
+        case 'xy':
+          d = `[${x},${y}]`
+          break
       }
-    }
-  }, [state.image, state.imageDataUpdated, state.channels, state.copyDataType])
+      if (copyDataRef.current && copyDataRef.current.length !== 0) {
+        copyDataRef.current += `,${d}`
+      } else {
+        copyDataRef.current += d
+      }
+    },
+    [copyDataRef, state.copyDataType]
+  )
 
-  function addStrToCopyData(
-    x: number,
-    y: number,
-    r: number,
-    g: number,
-    b: number,
-    a: number
-  ) {
-    let d
-    switch (state.copyDataType) {
-      case 'rgb':
-        d = `[${r},${g},${b}]`
-        break
-      case 'rgba':
-        d = `[${r},${g},${b},${a}]`
-        break
-      case 'xyrgb':
-        d = `[${x},${y},${r},${g},${b}]`
-        break
-      case 'xyrgba':
-        d = `[${x},${y},${r},${g},${b},${a}]`
-        break
-      case 'xy':
-        d = `[${x},${y}]`
-        break
-    }
-    if (copyData.length !== 0) {
-      copyData += `,${d}`
-    } else {
-      copyData += d
-    }
-  }
-
-  function animate() {
+  const animate = useCallback(() => {
     RAF.current = requestAnimationFrame(animate)
 
     if (!canvasRef.current || !state.image) return
@@ -130,7 +117,7 @@ const ImageCanvas = () => {
         const a = Math.floor((imageData[i + 3] / 255) * 100) / 100
 
         if (i === 0) {
-          copyData = ''
+          copyDataRef.current = ''
         }
 
         switch (state.copyDataType) {
@@ -195,7 +182,7 @@ const ImageCanvas = () => {
         }
 
         if (i === imageData.length - 4) {
-          dispatch(mainActions.addToCopyData(copyData))
+          dispatch(mainActions.addToCopyData(copyDataRef.current))
         }
       }
 
@@ -205,7 +192,33 @@ const ImageCanvas = () => {
     state.particles.forEach((particle) => {
       particle.draw()
     })
-  }
+  }, [
+    addStrToCopyData,
+    dispatch,
+    state.channels.a,
+    state.channels.b,
+    state.channels.g,
+    state.channels.r,
+    state.copyDataType,
+    state.image,
+    state.imageDataUpdated,
+    state.particles,
+  ])
+
+  useEffect(() => {
+    animate()
+    return () => {
+      if (RAF.current) {
+        cancelAnimationFrame(RAF.current)
+      }
+    }
+  }, [
+    state.image,
+    state.imageDataUpdated,
+    state.channels,
+    state.copyDataType,
+    animate,
+  ])
 
   return (
     <Center as="section" pos="relative" overflow="hidden" mb={7}>

@@ -1,8 +1,7 @@
-import { Box, Button, Input, Textarea, VStack } from '@chakra-ui/react'
+import { Button, Textarea, useToast, VStack } from '@chakra-ui/react'
 import { useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { mainActions, RootState } from '../../store'
-import { useToast } from '@chakra-ui/react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
 
 const copyCodeData = {
   particle() {

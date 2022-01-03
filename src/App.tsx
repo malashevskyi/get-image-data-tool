@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import CopyParticleCode from './components/CopyParticleCode'
 import DataControls from './components/DataControls'
@@ -16,25 +16,7 @@ function App() {
   const canvasGradient = useRef<CanvasGradient | null>(null)
   const RAF = useRef<number | null>(null)
 
-  useEffect(() => {
-    animate()
-
-    // return () => {
-    //   if (RAF.current) {
-    // cancelAnimationFrame(RAF.current)
-    //   }
-    // }
-  }, [state.canvasChooseSize, state.imageDataUpdated])
-
-  function animate() {
-    // if (RAF.current) {
-    //   cancelAnimationFrame(RAF.current)
-    // }
-    RAF.current = requestAnimationFrame(animate)
-
-    imageChooseCanvasAnimate()
-  }
-  function imageChooseCanvasAnimate() {
+  const imageChooseCanvasAnimate = useCallback(() => {
     const { width, height } = state.canvasChooseSize
     if (!canvasChoose.current || !width || !height) return
 
@@ -77,7 +59,26 @@ function App() {
 
     context.stroke()
     context.closePath()
-  }
+  }, [state.canvasChooseSize])
+
+  const animate = useCallback(() => {
+    // if (RAF.current) {
+    //   cancelAnimationFrame(RAF.current)
+    // }
+    RAF.current = requestAnimationFrame(animate)
+
+    imageChooseCanvasAnimate()
+  }, [imageChooseCanvasAnimate])
+
+  useEffect(() => {
+    animate()
+
+    // return () => {
+    //   if (RAF.current) {
+    // cancelAnimationFrame(RAF.current)
+    //   }
+    // }
+  }, [state.canvasChooseSize, state.imageDataUpdated, animate])
 
   return (
     <Box pos="relative" overflow="hidden" w="calc(100% - 4px)" ml="2px">

@@ -1,5 +1,12 @@
 import { Box, Center, HStack, VStack } from '@chakra-ui/react'
-import { forwardRef, RefObject, useEffect, useRef, useState } from 'react'
+import {
+  forwardRef,
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { mainActions, RootState } from '../../store'
 import ChooseImage from '../ChooseImage'
@@ -14,6 +21,17 @@ const Drop = forwardRef((_, ref) => {
   const state = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
 
+  const updateCanvasSize = useCallback(() => {
+    if (!chooseSectionRef.current) return
+
+    dispatch(
+      mainActions.setCanvasGradientSize({
+        width: chooseSectionRef.current.clientWidth,
+        height: chooseSectionRef.current.clientHeight,
+      })
+    )
+  }, [dispatch, chooseSectionRef])
+
   // choose image canvas animation
   useEffect(() => {
     updateCanvasSize()
@@ -22,7 +40,7 @@ const Drop = forwardRef((_, ref) => {
     return () => {
       window.removeEventListener('resize', updateCanvasSize)
     }
-  }, [chooseSectionRef.current])
+  }, [updateCanvasSize])
 
   // prevent drop image in document (it opens image in new tab)
   useEffect(() => {
@@ -33,14 +51,58 @@ const Drop = forwardRef((_, ref) => {
     }
   }, [])
 
+  const removeOverlay = useCallback(
+    (event?: DragEvent | MouseEvent) => {
+      if (!event) {
+        setIsDropActive(false)
+        return
+      }
+
+      preventDocumentImageDrop(event)
+
+      const position = document.elementFromPoint(event.clientX, event.clientY)
+      if (
+        position &&
+        position !== chooseSectionRef.current &&
+        !chooseSectionRef.current?.contains(position)
+      ) {
+        setIsDropActive(false)
+      }
+    },
+    [chooseSectionRef]
+  )
+
   // choose image handler
   useEffect(() => {
     if (!state.imageUrl) return
 
     // remove active drag/drop overlay
     removeOverlay()
-  }, [state.imageUrl])
+  }, [state.imageUrl, removeOverlay])
 
+  const onDropFileHandler = useCallback(
+    (event: DragEvent) => {
+      updateCanvasSize()
+      const files = event.dataTransfer?.files
+      if (!files) return
+      const { 0: file } = files
+
+      const blobUrl = URL.createObjectURL(file)
+
+      const image = new Image()
+      image.src = blobUrl
+
+      image.onload = () => {
+        dispatch(mainActions.reset())
+        dispatch(mainActions.newImageUrl(blobUrl))
+        dispatch(
+          mainActions.newImageSize({ width: image.width, height: image.height })
+        )
+        dispatch(mainActions.newImage(image))
+      }
+    },
+    [updateCanvasSize, dispatch]
+  )
   // window drag event
   useEffect(() => {
     chooseSectionRef.current?.addEventListener('dragover', catchFileActivate)
@@ -55,28 +117,7 @@ const Drop = forwardRef((_, ref) => {
       chooseSectionRef.current?.removeEventListener('drop', onDropFileHandler)
       document.removeEventListener('dragover', removeOverlay)
     }
-  }, [])
-
-  function onDropFileHandler(event: DragEvent) {
-    updateCanvasSize()
-    const files = event.dataTransfer?.files
-    if (!files) return
-    const { 0: file } = files
-
-    const blobUrl = URL.createObjectURL(file)
-
-    const image = new Image()
-    image.src = blobUrl
-
-    image.onload = () => {
-      dispatch(mainActions.reset())
-      dispatch(mainActions.newImageUrl(blobUrl))
-      dispatch(
-        mainActions.newImageSize({ width: image.width, height: image.height })
-      )
-      dispatch(mainActions.newImage(image))
-    }
-  }
+  }, [chooseSectionRef, onDropFileHandler, removeOverlay])
 
   function preventDocumentImageDrop(event: DragEvent | MouseEvent) {
     event.preventDefault()
@@ -85,35 +126,6 @@ const Drop = forwardRef((_, ref) => {
 
   function catchFileActivate(event: DragEvent) {
     setIsDropActive(true)
-  }
-
-  function removeOverlay(event?: DragEvent | MouseEvent) {
-    if (!event) {
-      setIsDropActive(false)
-      return
-    }
-
-    preventDocumentImageDrop(event)
-
-    const position = document.elementFromPoint(event.clientX, event.clientY)
-    if (
-      position &&
-      position !== chooseSectionRef.current &&
-      !chooseSectionRef.current?.contains(position)
-    ) {
-      setIsDropActive(false)
-    }
-  }
-
-  function updateCanvasSize() {
-    if (!chooseSectionRef.current) return
-
-    dispatch(
-      mainActions.setCanvasGradientSize({
-        width: chooseSectionRef.current.clientWidth,
-        height: chooseSectionRef.current.clientHeight,
-      })
-    )
   }
 
   const canvasGradient = (
