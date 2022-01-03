@@ -1,6 +1,6 @@
 ## GET IMAGE DATA TOOL
 
-[Visit the website](https://get-image-data.web.app/)
+[Website](https://get-image-data-tool.vercel.app/)
 
 You can get data from image instead of using `context.getImageData();`
 
