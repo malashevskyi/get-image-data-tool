@@ -54,7 +54,6 @@ const ImageCanvas = () => {
   const state = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const RAF = useRef<number | null>(null)
   const copyDataRef = useRef<string | null>(null)
 
   const addStrToCopyData = useCallback(
@@ -87,8 +86,6 @@ const ImageCanvas = () => {
   )
 
   const animate = useCallback(() => {
-    RAF.current = requestAnimationFrame(animate)
-
     if (!canvasRef.current || !state.image) return
 
     const context = canvasRef.current.getContext(
@@ -207,11 +204,6 @@ const ImageCanvas = () => {
 
   useEffect(() => {
     animate()
-    return () => {
-      if (RAF.current) {
-        cancelAnimationFrame(RAF.current)
-      }
-    }
   }, [
     state.image,
     state.imageDataUpdated,
