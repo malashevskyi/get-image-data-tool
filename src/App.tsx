@@ -62,9 +62,9 @@ function App() {
   }, [state.canvasChooseSize])
 
   const animate = useCallback(() => {
-    // if (RAF.current) {
-    //   cancelAnimationFrame(RAF.current)
-    // }
+    if (RAF.current) {
+      cancelAnimationFrame(RAF.current)
+    }
     RAF.current = requestAnimationFrame(animate)
 
     imageChooseCanvasAnimate()
@@ -72,12 +72,6 @@ function App() {
 
   useEffect(() => {
     animate()
-
-    // return () => {
-    //   if (RAF.current) {
-    // cancelAnimationFrame(RAF.current)
-    //   }
-    // }
   }, [state.canvasChooseSize, state.imageDataUpdated, animate])
 
   return (
