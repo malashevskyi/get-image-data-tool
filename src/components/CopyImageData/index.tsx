@@ -34,12 +34,9 @@ const CopyImageData = () => {
 
   return (
     <Box>
-      <Textarea
-        pos="absolute"
-        left="-10000px"
-        top="-10000px"
-        ref={textAreaRef}
-      />
+      <Box as="label" pos="absolute" left="-10000px" top="-10000px">
+        <Textarea ref={textAreaRef} />
+      </Box>
       <Button colorScheme="blue" onClick={onClickHandler}>
         Copy image data
       </Button>

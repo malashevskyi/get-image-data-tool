@@ -75,9 +75,15 @@ const DataControls = () => {
           </RangeSliderTrack>
           <RangeSliderThumb boxSize={10} index={0} bg="red.500" color="white">
             {rValue[0]}
+            <Box pos="absolute" left="-100000px">
+              R value
+            </Box>
           </RangeSliderThumb>
           <RangeSliderThumb boxSize={10} index={1} bg="red.500" color="white">
             {rValue[1]}
+            <Box pos="absolute" left="-100000px">
+              R value
+            </Box>
           </RangeSliderThumb>
         </RangeSlider>
         <RangeSlider
@@ -95,9 +101,15 @@ const DataControls = () => {
           </RangeSliderTrack>
           <RangeSliderThumb boxSize={10} index={0} bg="green.500" color="white">
             {gValue[0]}
+            <Box pos="absolute" left="-100000px">
+              G value
+            </Box>
           </RangeSliderThumb>
           <RangeSliderThumb boxSize={10} index={1} bg="green.500" color="white">
             {gValue[1]}
+            <Box pos="absolute" left="-100000px">
+              G value
+            </Box>
           </RangeSliderThumb>
         </RangeSlider>
         <RangeSlider
@@ -115,9 +127,15 @@ const DataControls = () => {
           </RangeSliderTrack>
           <RangeSliderThumb boxSize={10} index={0} bg="blue.500" color="white">
             {bValue[0]}
+            <Box pos="absolute" left="-100000px">
+              B value
+            </Box>
           </RangeSliderThumb>
           <RangeSliderThumb boxSize={10} index={1} bg="blue.500" color="white">
             {bValue[1]}
+            <Box pos="absolute" left="-100000px">
+              B value
+            </Box>
           </RangeSliderThumb>
         </RangeSlider>
         <RangeSlider
@@ -137,9 +155,15 @@ const DataControls = () => {
           </RangeSliderTrack>
           <RangeSliderThumb boxSize={10} index={0} bg="gray.500" color="white">
             {aValue[0]}
+            <Box pos="absolute" left="-100000px">
+              A value
+            </Box>
           </RangeSliderThumb>
           <RangeSliderThumb boxSize={10} index={1} bg="gray.500" color="white">
             {aValue[1]}
+            <Box pos="absolute" left="-100000px">
+              A value
+            </Box>
           </RangeSliderThumb>
         </RangeSlider>
       </Box>
