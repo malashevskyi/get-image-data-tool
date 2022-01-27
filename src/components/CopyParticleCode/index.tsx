@@ -1,4 +1,4 @@
-import { Button, Textarea, useToast, VStack } from '@chakra-ui/react'
+import { Box, Button, Textarea, useToast, VStack } from '@chakra-ui/react'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
@@ -150,12 +150,9 @@ const CopyParticleCode = () => {
       zIndex={4}
       display={['none', 'none', 'none', 'flex']}
     >
-      <Textarea
-        pos="absolute"
-        left="-10000px"
-        top="-10000px"
-        ref={textAreaRef}
-      />
+      <Box as="label" pos="absolute" left="-10000px" top="-10000px">
+        <Textarea ref={textAreaRef} />
+      </Box>
       <Button onClick={() => onClickHandler('particle')} colorScheme="blue">
         copy particle
       </Button>
