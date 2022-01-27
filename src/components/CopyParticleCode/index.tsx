@@ -151,6 +151,7 @@ const CopyParticleCode = () => {
       display={['none', 'none', 'none', 'flex']}
     >
       <Box as="label" pos="absolute" left="-10000px" top="-10000px">
+        Copy data textarea
         <Textarea ref={textAreaRef} />
       </Box>
       <Button onClick={() => onClickHandler('particle')} colorScheme="blue">
